@@ -15,6 +15,7 @@ namespace ProjMediaCollection.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Director> Directors { get; set; }
         public DbSet<MovieGenre> Genres { get; set; }
+        public DbSet<MovieGenresMovie> MovieGenresMovies { get; set; }
         public DbSet<MovieDirector> MovieDirectors { get; set; }
         //Muziek DbSet//
         public DbSet<Album> Albums { get; set; }
@@ -23,6 +24,7 @@ namespace ProjMediaCollection.Data
         public DbSet<MusicGenre> MusicGenres { get; set; }
         public DbSet<Song> Songs { get; set; }
         public DbSet<SongArtist> SongArtists { get; set;}
+        public DbSet<SongGenre> SongGenres { get; set; }
         //Series DbSet//
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<Season> Seasons { get; set; }
@@ -37,8 +39,11 @@ namespace ProjMediaCollection.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<MovieDirector>().HasKey(x => new { x.DirectorId, x.MovieId });
+            builder.Entity<MovieGenresMovie>().HasKey(x => new { x.MovieGenreId, x.MovieId });
             builder.Entity<SongArtist>().HasKey(x => new { x.ArtistId, x.SongId });
             builder.Entity<AlbumArtist>().HasKey(x => new { x.ArtistId, x.AlbumId });
+            builder.Entity<SongGenre>().HasKey(x => new { x.MusicGenreId, x.SongId });
+
             builder.Entity<MovieGenre>().HasData(
                 new MovieGenre { Id = 1, Name = "Sifi" },
                 new MovieGenre { Id = 2, Name = "Comedy" },

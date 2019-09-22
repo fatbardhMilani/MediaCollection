@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,11 +8,11 @@ namespace ProjMediaCollection.Domain.Muziek
 {
     public class SongGenre
     {
-        //public Movie Movie { get; set; }
-        //[ForeignKey("Movie")]
-        //public int MovieId { get; set; }
-        //public Director Director { get; set; }
-        //[ForeignKey("Director")]
-        //public int DirectorId { get; set; }
+        public Song Song { get; set; }
+        [ForeignKey("Movie")]
+        public int SongId { get; set; }
+        public MusicGenre MusicGenre { get; set; }
+        [ForeignKey("MusicGenre")]
+        public int MusicGenreId { get; set; }
     }
 }

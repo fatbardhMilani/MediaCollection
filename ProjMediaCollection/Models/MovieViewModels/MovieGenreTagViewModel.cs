@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjMediaCollection.Domain.Film
+namespace ProjMediaCollection.Models.MovieViewModels
 {
-    public class MovieGenre
+    public class MovieGenreTagViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<MovieGenresMovie> Genre { get; set; }
+        public bool Checked { get; set; }
     }
 }

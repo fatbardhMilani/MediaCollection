@@ -1,0 +1,24 @@
+﻿@model ProjMediaCollection.Models.MovieViewModels.DetailMovieViewModel
+
+<strong>Title</strong>
+<p>@Model.Title</p>
+<strong>Cover</strong>
+
+@if (Model.Cover != null)
+{
+    <p><img src="data:image;base64,@System.Convert.ToBase64String(Model.Cover)" width="280" height="410" /></p>
+}
+else
+{
+    <p>Geen foto beschikbaar</p>
+}
+<p><strong>Release</strong></p>
+<p>@Model.Releas</p>
+
+<p><strong>Genre</strong></p>
+@foreach (var item in Model.MovieGenreTagDetails)
+{
+    <p>@item.Name</p>
+}
+
+<button class="btn btn-primary" type="submit" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>

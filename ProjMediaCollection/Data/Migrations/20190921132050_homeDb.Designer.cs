@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190921132050_homeDb")]
+    partial class homeDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,10 +213,6 @@ namespace ProjMediaCollection.Data.Migrations
 
                     b.Property<byte[]>("Cover");
 
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Director");
-
                     b.Property<TimeSpan>("Duration");
 
                     b.Property<DateTime>("Releas");
@@ -265,19 +263,6 @@ namespace ProjMediaCollection.Data.Migrations
                     );
                 });
 
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.MovieGenresMovie", b =>
-                {
-                    b.Property<int>("MovieGenreId");
-
-                    b.Property<int>("MovieId");
-
-                    b.HasKey("MovieGenreId", "MovieId");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("MovieGenresMovies");
-                });
-
             modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.Album", b =>
                 {
                     b.Property<int>("Id")
@@ -312,6 +297,8 @@ namespace ProjMediaCollection.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AlbumId");
+
                     b.Property<byte[]>("Foto");
 
                     b.Property<DateTime>("GeboorteDatum");
@@ -321,6 +308,8 @@ namespace ProjMediaCollection.Data.Migrations
                     b.Property<string>("Voornaam");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AlbumId");
 
                     b.ToTable("Artists");
                 });
@@ -383,19 +372,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.HasIndex("SongId");
 
                     b.ToTable("SongArtists");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.SongGenre", b =>
-                {
-                    b.Property<int>("MusicGenreId");
-
-                    b.Property<int>("SongId");
-
-                    b.HasKey("MusicGenreId", "SongId");
-
-                    b.HasIndex("SongId");
-
-                    b.ToTable("SongGenres");
                 });
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Series.Episode", b =>
@@ -541,19 +517,6 @@ namespace ProjMediaCollection.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.MovieGenresMovie", b =>
-                {
-                    b.HasOne("ProjMediaCollection.Domain.Film.MovieGenre", "MovieGenre")
-                        .WithMany("Genre")
-                        .HasForeignKey("MovieGenreId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProjMediaCollection.Domain.Film.Movie", "Movie")
-                        .WithMany("Genre")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.AlbumArtist", b =>
                 {
                     b.HasOne("ProjMediaCollection.Domain.Muziek.Album", "Album")
@@ -565,6 +528,13 @@ namespace ProjMediaCollection.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.Artist", b =>
+                {
+                    b.HasOne("ProjMediaCollection.Domain.Muziek.Album")
+                        .WithMany("AlbumArtists")
+                        .HasForeignKey("AlbumId");
                 });
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.Song", b =>
@@ -585,19 +555,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.HasOne("ProjMediaCollection.Domain.Muziek.Artist", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProjMediaCollection.Domain.Muziek.Song", "Song")
-                        .WithMany()
-                        .HasForeignKey("SongId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.SongGenre", b =>
-                {
-                    b.HasOne("ProjMediaCollection.Domain.Muziek.MusicGenre", "MusicGenre")
-                        .WithMany()
-                        .HasForeignKey("MusicGenreId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProjMediaCollection.Domain.Muziek.Song", "Song")

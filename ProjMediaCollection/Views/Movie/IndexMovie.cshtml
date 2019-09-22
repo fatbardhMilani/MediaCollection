@@ -1,0 +1,28 @@
+﻿@model ProjMediaCollection.Models.MovieViewModels.IndexMovieViewModel
+
+@if (Model.MovieList.Count() == 0)
+{
+    <p>Er zijn nog geen films</p>
+}
+
+<table class="table">
+    @foreach (var item in Model.MovieList)
+    {
+        <tr>
+            <td>
+                @if (item.Cover != null)
+                {   <a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" width="280" height="410" />
+                    </a>
+                    
+                }
+                else
+                {
+                    <p>Geen foto beschikbaar</p>
+                }
+            </td>
+            <td>@item.Title</td>
+            <td>@item.Releas</td>
+        </tr>
+    }
+
+</table>

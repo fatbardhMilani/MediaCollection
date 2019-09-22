@@ -1,0 +1,43 @@
+﻿@model  ProjMediaCollection.Models.MovieViewModels.EditMovieViewModel
+
+    <form asp-controller="Movie" asp-action="EditMovie" method="post" enctype="multipart/form-data">
+
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Cover"></label>
+            <input asp-for="Cover" class=" form-control" />
+            <span asp-validation-for="Cover"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Releas"></label>
+            <input asp-for="Releas" class="form-control" />
+            <span asp-validation-for="Releas" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MovieGenreTags">Genre</label>
+            <p>
+                @for (var i = 0; i < Model.MovieGenreTags.Count; i++)
+                {
+                    <label>@Model.MovieGenreTags[i].Name</label>
+                    <input asp-for="@Model.MovieGenreTags[i].Checked" type="checkbox" />
+                    <input asp-for="@Model.MovieGenreTags[i].Id" type="hidden" />
+                    <input asp-for="@Model.MovieGenreTags[i].Name" type="hidden" />
+                }
+            </p>
+        </div>
+
+        @*<div class="form-group">
+            <label asp-for="Duration"></label>
+            <input asp-for="Duration" class="form-control" />
+            <span asp-validation-for="Duration"></span>
+        </div>*@
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </form>
