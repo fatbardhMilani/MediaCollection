@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190923111313_UserMovies")]
+    partial class UserMovies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,23 +276,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.ToTable("MovieGenresMovies");
                 });
 
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.MoviePlaylist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MoviePlaylists");
-                });
-
             modelBuilder.Entity("ProjMediaCollection.Domain.Film.UserMovie", b =>
                 {
                     b.Property<int>("Id")
@@ -299,11 +284,13 @@ namespace ProjMediaCollection.Data.Migrations
 
                     b.Property<int>("MovieId");
 
-                    b.Property<int>("MoviePlaylistId");
+                    b.Property<string>("USerId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MoviePlaylistId");
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("USerId");
 
                     b.ToTable("UserMovies");
                 });
@@ -584,19 +571,16 @@ namespace ProjMediaCollection.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.MoviePlaylist", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("ProjMediaCollection.Domain.Film.UserMovie", b =>
                 {
-                    b.HasOne("ProjMediaCollection.Domain.Film.MoviePlaylist")
-                        .WithMany("UserMovie")
-                        .HasForeignKey("MoviePlaylistId")
+                    b.HasOne("ProjMediaCollection.Domain.Film.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("USerId");
                 });
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.AlbumArtist", b =>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190923135914_dghdg")]
+    partial class dghdg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,13 +299,19 @@ namespace ProjMediaCollection.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("MovieFK");
+
                     b.Property<int>("MovieId");
+
+                    b.Property<int>("MoviePlaylistFK");
 
                     b.Property<int>("MoviePlaylistId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MoviePlaylistId");
+                    b.HasIndex("MovieFK");
+
+                    b.HasIndex("MoviePlaylistFK");
 
                     b.ToTable("UserMovies");
                 });
@@ -593,9 +601,14 @@ namespace ProjMediaCollection.Data.Migrations
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Film.UserMovie", b =>
                 {
-                    b.HasOne("ProjMediaCollection.Domain.Film.MoviePlaylist")
+                    b.HasOne("ProjMediaCollection.Domain.Film.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProjMediaCollection.Domain.Film.MoviePlaylist", "MoviePlaylist")
                         .WithMany("UserMovie")
-                        .HasForeignKey("MoviePlaylistId")
+                        .HasForeignKey("MoviePlaylistFK")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

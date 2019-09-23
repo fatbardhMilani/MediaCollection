@@ -5,24 +5,58 @@
     <p>Er zijn nog geen films</p>
 }
 
+
+
+<form asp-action="IndexMovie" asp-controller="Movie" method="get">
+    <div class=" form-group">
+        <label asp-for="Search">Filter</label>
+        <input class="form-control" asp-for="Search" />
+        <span class="text-danger" asp-validation-for="Search"></span>
+    </div>
+
+    <label asp-for="TagSearch">Filter on genre</label>
+    <p>
+        @for (int i = 0; i < Model.TagSearch.Count; i++)
+        {
+            <label>@Model.TagSearch[i].Name</label>
+            <input asp-for="@Model.TagSearch[i].Checked" type="checkbox" />
+            <input asp-for="@Model.TagSearch[i].Id" type="hidden" />
+            <input asp-for="@Model.TagSearch[i].Name" type="hidden" />
+        }
+    </p>
+
+    <button class="btn btn-success" type="submit">Search</button>
+
+</form>
+
+
+<a asp-action="CreateMovie" asp-controller="Movie">Create new movie</a>
+
 <table class="table">
     @foreach (var item in Model.MovieList)
     {
-        <tr>
-            <td>
-                @if (item.Cover != null)
-                {   <a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" width="280" height="410" />
-                    </a>
-                    
-                }
-                else
-                {
-                    <p>Geen foto beschikbaar</p>
-                }
-            </td>
-            <td>@item.Title</td>
-            <td>@item.Releas</td>
-        </tr>
+    <tr>
+        <td>
+            @if (item.Cover != null)
+            {<a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" width="280" height="410" /></a>
+
+            }
+            else
+            {
+                <p>Geen foto beschikbaar</p>
+            }
+        </td>
+        <td>@item.Title</td>
+        <td>@item.Releas</td>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <td><a asp-action="DeleteMovie" asp-controller="Movie" asp-route-id="@item.Id">Delete</a></td>
+        }
+
+        <td><a asp-action="AddMovie" asp-controller="User" asp-route-id="@item.Id">Add to playlist</a></td>
+
+    </tr>
     }
 
 </table>

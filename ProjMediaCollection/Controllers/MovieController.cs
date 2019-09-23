@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjMediaCollection.Data;
 using ProjMediaCollection.Domain.Film;
@@ -21,6 +22,7 @@ namespace ProjMediaCollection.Controllers
             _applicationDbContext = applicationDbContext;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateMovie(CreateMovieViewModel movieModel)
         {
@@ -42,7 +44,9 @@ namespace ProjMediaCollection.Controllers
                     Title = movieModel.Title,
                     Cover = memoryStream.ToArray(),
                     Releas = movieModel.Releas,
-                    //Duration = movieModel.Duration
+                    Director = movieModel.Director,
+                    Description = movieModel.Description,
+                    Duration = movieModel.Duration
                 };
 
                 List<MovieGenresMovie> selectedTags = new List<MovieGenresMovie>();
@@ -62,6 +66,7 @@ namespace ProjMediaCollection.Controllers
             }
         }
 
+        [Authorize]
         public IActionResult CreateMovie()
         {
             var movie = new CreateMovieViewModel();
@@ -76,14 +81,47 @@ namespace ProjMediaCollection.Controllers
             return View(movie);
         }
 
-        public IActionResult IndexMovie()
+        public IActionResult IndexMovie(string search, List<MovieGenreTagViewModel> tagSearch)
         {
-            IndexMovieViewModel indexMovie = new IndexMovieViewModel();
-            IEnumerable<Movie> moviesFromDb = _applicationDbContext.Movies.ToList();
 
-            foreach (var item in moviesFromDb)
+            IndexMovieViewModel movieSearch = new IndexMovieViewModel();
+
+            IQueryable<Movie> query = _applicationDbContext.Movies.Include(x => x.Genre).ThenInclude(x => x.MovieGenre);
+
+            if (!string.IsNullOrEmpty(search))
             {
-                indexMovie.MovieList.Add(new ListMovieViewModel()
+                query = query.Where(x => x.Title.Contains(search));
+            }
+
+            if (tagSearch !=null && tagSearch.Any(x => x.Checked == true))
+            {
+                List<int> checkedIds = new List<int>();
+
+                foreach (var item in tagSearch)
+                {
+                    if (item.Checked == true)
+                    {
+                        checkedIds.Add(item.Id);
+                    }
+                }
+                query = query.Where(mov => checkedIds.All(id => mov.Genre.Select(x => x.MovieGenreId).Contains(id)));
+            }
+
+            IEnumerable<Movie> movieToSearch = query.ToList();
+
+            List<MovieGenreTagViewModel> tag = new List<MovieGenreTagViewModel>();
+            foreach(var item in _applicationDbContext.Genres.ToList())
+            {
+                tag.Add(new MovieGenreTagViewModel { Name = item.Name, Id = item.Id });
+            }
+            movieSearch.TagSearch = tag;
+
+            //IndexMovieViewModel indexMovie = new IndexMovieViewModel();
+            //IEnumerable<Movie> moviesFromDb = _applicationDbContext.Movies.ToList();
+
+            foreach (var item in movieToSearch)
+            {
+                movieSearch.MovieList.Add(new ListMovieViewModel()
                 {
                     Id = item.Id,
                     Cover = item.Cover,
@@ -91,7 +129,7 @@ namespace ProjMediaCollection.Controllers
                     Releas = item.Releas
                 });
             }
-            return View(indexMovie);
+            return View(movieSearch);
         }
 
         public IActionResult DetailMovie(int id)
@@ -114,10 +152,13 @@ namespace ProjMediaCollection.Controllers
 
             DetailMovieViewModel detailMovie = new DetailMovieViewModel()
             {
-
+                Id = movieFromDb.Id,
                 Title = movieFromDb.Title,
                 Cover = movieFromDb.Cover,
                 Releas = movieFromDb.Releas,
+                Director = movieFromDb.Director,
+                Description = movieFromDb.Description,
+                Duration = movieFromDb.Duration,
                 MovieGenreTagDetails = tags
             };
 
@@ -125,6 +166,7 @@ namespace ProjMediaCollection.Controllers
             return View(detailMovie);
         }
 
+        [Authorize]
         public IActionResult EditMovie(int id)
         {
             Movie movieFromDb = _applicationDbContext.Movies
@@ -148,13 +190,17 @@ namespace ProjMediaCollection.Controllers
             EditMovieViewModel movieToEdit = new EditMovieViewModel()
             {
                 Title = movieFromDb.Title,
-                Releas = movieFromDb.Releas
+                Releas = movieFromDb.Releas,
+                Director = movieFromDb.Director,
+                Description = movieFromDb.Description,
+                Duration = movieFromDb.Duration
             };
             movieToEdit.MovieGenreTags = movieGenres;
 
             return View(movieToEdit);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> EditMovie(int id, EditMovieViewModel editMovieModel)
         {
@@ -193,6 +239,9 @@ namespace ProjMediaCollection.Controllers
                 movieToEdit.Title = editMovieModel.Title;
                 movieToEdit.Releas = editMovieModel.Releas;
                 movieToEdit.Genre = genresToEdit;
+                movieToEdit.Director = editMovieModel.Director;
+                movieToEdit.Description = editMovieModel.Description;
+                movieToEdit.Duration = editMovieModel.Duration;
 
                 if (editMovieModel.Cover != null)
                 {
@@ -206,6 +255,17 @@ namespace ProjMediaCollection.Controllers
             };
 
             
+        }
+
+        [Authorize(Roles = "Admin")]
+        //[HttpPost]
+        public IActionResult DeleteMovie(int id)
+        {
+            Movie movieToDelete = _applicationDbContext.Movies.SingleOrDefault(x => x.Id == id);
+            _applicationDbContext.Movies.Remove(movieToDelete);
+            _applicationDbContext.SaveChanges();
+
+            return RedirectToAction("IndexMovie");
         }
 
 

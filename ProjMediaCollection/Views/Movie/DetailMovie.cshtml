@@ -15,10 +15,23 @@ else
 <p><strong>Release</strong></p>
 <p>@Model.Releas</p>
 
+<p><strong>Director</strong></p>
+<p>@Model.Director</p>
+
+<p><strong>Duration</strong></p>
+<p>@Model.Duration</p>
+
+<p><strong>Description</strong></p>
+<p>@Model.Description</p>
+
 <p><strong>Genre</strong></p>
 @foreach (var item in Model.MovieGenreTagDetails)
 {
     <p>@item.Name</p>
 }
 
-<button class="btn btn-primary" type="submit" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>
+<form method="post">
+    <a asp-action="EditMovie" asp-controller="Movie" asp-route-id="@Model.Id">Edit</a>
+    @*<button class="btn btn-primary" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>*@
+
+</form>

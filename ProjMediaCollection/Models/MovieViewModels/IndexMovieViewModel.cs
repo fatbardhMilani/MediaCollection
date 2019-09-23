@@ -8,5 +8,9 @@ namespace ProjMediaCollection.Models.MovieViewModels
     public class IndexMovieViewModel
     {
         public List<ListMovieViewModel> MovieList = new List<ListMovieViewModel>();
+
+        public string Search { get; set; }
+
+        public List<MovieGenreTagViewModel> TagSearch { get; set; }
     }
 }

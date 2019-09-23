@@ -1,0 +1,33 @@
+﻿@model ProjMediaCollection.Models.UserViewModels.MyMovieIndexViewModel
+
+@*<form asp-action="MyMovieIndex" asp-controller="User" method="get">
+
+</form>*@
+
+    <table class="table">
+        @foreach (var item in Model.MyMovieList)
+        {
+            <tr>
+                @*<td>
+                    @if (item.Cover != null)
+                    {<a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" width="280" height="410" /></a>
+
+                    }
+                    else
+                    {
+                        <p>Geen foto beschikbaar</p>
+                    }
+                </td>*@
+                <td>@item.Name</td>
+
+                @*@if (User.IsInRole("Admin"))
+                {
+                    <td><a asp-action="DeleteMovie" asp-controller="Movie" asp-route-id="@item.Id">Delete</a></td>
+                }
+
+                <td><a asp-action="AddMovie" asp-controller="User" asp-route-id="@item.Id">Add to playlist</a></td>*@
+
+            </tr>
+        }
+
+    </table>

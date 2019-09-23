@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190923135015_MoviePlaylist")]
+    partial class MoviePlaylist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,6 +305,8 @@ namespace ProjMediaCollection.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MovieId");
+
                     b.HasIndex("MoviePlaylistId");
 
                     b.ToTable("UserMovies");
@@ -593,7 +597,12 @@ namespace ProjMediaCollection.Data.Migrations
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Film.UserMovie", b =>
                 {
-                    b.HasOne("ProjMediaCollection.Domain.Film.MoviePlaylist")
+                    b.HasOne("ProjMediaCollection.Domain.Film.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProjMediaCollection.Domain.Film.MoviePlaylist", "MoviePlaylist")
                         .WithMany("UserMovie")
                         .HasForeignKey("MoviePlaylistId")
                         .OnDelete(DeleteBehavior.Cascade);

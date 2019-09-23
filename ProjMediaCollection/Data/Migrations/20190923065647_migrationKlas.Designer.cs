@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190923065647_migrationKlas")]
+    partial class migrationKlas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,9 +138,11 @@ namespace ProjMediaCollection.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -169,9 +173,11 @@ namespace ProjMediaCollection.Data.Migrations
                 {
                     b.Property<string>("UserId");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Value");
 
@@ -272,40 +278,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("MovieGenresMovies");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.MoviePlaylist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MoviePlaylists");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.UserMovie", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("MovieId");
-
-                    b.Property<int>("MoviePlaylistId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MoviePlaylistId");
-
-                    b.ToTable("UserMovies");
                 });
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.Album", b =>
@@ -581,21 +553,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.HasOne("ProjMediaCollection.Domain.Film.Movie", "Movie")
                         .WithMany("Genre")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.MoviePlaylist", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.UserMovie", b =>
-                {
-                    b.HasOne("ProjMediaCollection.Domain.Film.MoviePlaylist")
-                        .WithMany("UserMovie")
-                        .HasForeignKey("MoviePlaylistId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
