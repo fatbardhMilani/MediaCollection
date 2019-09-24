@@ -33,30 +33,50 @@
 <a asp-action="CreateMovie" asp-controller="Movie">Create new movie</a>
 
 <table class="table">
+    <tr>
+        <th>movieId</th>
+        <th>Cover</th>
+        <th>Title</th>
+        <th>Release</th>
+    </tr>
     @foreach (var item in Model.MovieList)
     {
-    <tr>
-        <td>
-            @if (item.Cover != null)
-            {<a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" width="280" height="410" /></a>
 
-            }
-            else
+
+        <tr>
+            <td>@item.Id</td>
+            <td>
+                @if (item.Cover != null)
+                {<a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" width="280" height="410" /></a>
+
+                }
+                else
+                {
+                    <p>Geen foto beschikbaar</p>
+                }
+            </td>
+            <td>@item.Title</td>
+            <td>@item.Release</td>
+
+            @if (User.IsInRole("Admin"))
             {
-                <p>Geen foto beschikbaar</p>
+                <td><a asp-action="DeleteMovie" asp-controller="Movie" asp-route-id="@item.Id">Delete</a></td>
             }
-        </td>
-        <td>@item.Title</td>
-        <td>@item.Releas</td>
 
-        @if (User.IsInRole("Admin"))
-        {
-            <td><a asp-action="DeleteMovie" asp-controller="Movie" asp-route-id="@item.Id">Delete</a></td>
-        }
+            <td>
+                <form asp-action="AddToPlaylist" asp-controller="User" asp-route-id="@item.Id" method="post">
+                    @*<a asp-action="AddToPlaylist"  asp-controller="User" asp-route-id="@item.Id" >Add to playlist</a>*@
 
-        <td><a asp-action="AddMovie" asp-controller="User" asp-route-id="@item.Id">Add to playlist</a></td>
+                    <div class=" form-group">
+                        <label asp-for="SelectedMoviePlaylist"></label>
+                        <select class="form-control" asp-for="SelectedMoviePlaylist" asp-items="Model.MoviePlaylistToSelect"></select>
+                        <span class="text-danger" asp-validation-for="MoviePlaylistToSelect"></span>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Add to playlist</button>
+                </form>
+            </td>
 
-    </tr>
+        </tr>
     }
 
 </table>

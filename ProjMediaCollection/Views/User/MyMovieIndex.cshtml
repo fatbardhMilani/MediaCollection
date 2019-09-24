@@ -4,30 +4,39 @@
 
 </form>*@
 
+    <td><a asp-action="CreateMovieList" asp-controller="User">Create new List</a></td>
     <table class="table">
-        @foreach (var item in Model.MyMovieList)
+        <tr>
+            <th>playlistId</th>
+            <th>playlistname</th>
+            <th>moviename</th>
+            <th>covers</th>
+        </tr>
+        @foreach (var item in Model.MyMoviePlayList)
         {
-            <tr>
-                @*<td>
-                    @if (item.Cover != null)
-                    {<a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" width="280" height="410" /></a>
+            @foreach (var movie in item.MyMoviesLists)
+            {
+    <tr>
+        <td>@item.Id</td>
+        <td>@item.Name</td>
 
-                    }
-                    else
-                    {
-                        <p>Geen foto beschikbaar</p>
-                    }
-                </td>*@
-                <td>@item.Name</td>
+        <td>@Html.Label(movie.Title)</td>
+        <td>
+            @movie.Id
+            @if (movie.Cover != null)
+            {
+                <a asp-controller="movie" asp-action="detailmovie" asp-route-id="@movie.Id">  <img src="data:image;base64,@System.Convert.ToBase64String(movie.Cover)" width="280" height="410" /></a>
+            }
+            else
+            {
+                <p>geen foto beschikbaar</p>
+            }
 
-                @*@if (User.IsInRole("Admin"))
-                {
-                    <td><a asp-action="DeleteMovie" asp-controller="Movie" asp-route-id="@item.Id">Delete</a></td>
-                }
 
-                <td><a asp-action="AddMovie" asp-controller="User" asp-route-id="@item.Id">Add to playlist</a></td>*@
 
-            </tr>
+        </td>
+
+
+    </tr>}
         }
-
     </table>

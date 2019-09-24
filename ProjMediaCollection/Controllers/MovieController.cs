@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjMediaCollection.Data;
 using ProjMediaCollection.Domain.Film;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ProjMediaCollection.Controllers
@@ -126,9 +128,19 @@ namespace ProjMediaCollection.Controllers
                     Id = item.Id,
                     Cover = item.Cover,
                     Title = item.Title,
-                    Releas = item.Releas
+                    Release = item.Releas
                 });
             }
+
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            List<SelectListItem> PlaylistToSelect = new List<SelectListItem>();
+            foreach (var item in _applicationDbContext.MoviePlaylists.Where(x => x.UserId == userName).ToList())
+            {
+                PlaylistToSelect.Add(new SelectListItem { Value = item.Id.ToString(), Text = item.Name });
+            }
+            movieSearch.MoviePlaylistToSelect = PlaylistToSelect;
+
             return View(movieSearch);
         }
 

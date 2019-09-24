@@ -16,10 +16,9 @@ namespace ProjMediaCollection.Domain.Film
         
         public int MoviePlaylistId { get; set; }
 
-        [NotMapped]
-        [ForeignKey("MovieFK")]
         public Movie Movie { get; set; }
-        
+        [ForeignKey("MovieIdForeignKey")]
+
         public int MovieId { get; set; }
     }
 }

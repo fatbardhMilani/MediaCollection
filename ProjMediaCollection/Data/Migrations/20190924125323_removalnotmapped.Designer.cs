@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190924125323_removalnotmapped")]
+    partial class removalnotmapped
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,13 +301,15 @@ namespace ProjMediaCollection.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("MovieFK");
+
                     b.Property<int>("MovieId");
 
                     b.Property<int>("MoviePlaylistId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MovieFK");
 
                     b.HasIndex("MoviePlaylistId");
 
@@ -599,7 +603,7 @@ namespace ProjMediaCollection.Data.Migrations
                 {
                     b.HasOne("ProjMediaCollection.Domain.Film.Movie", "Movie")
                         .WithMany()
-                        .HasForeignKey("MovieId")
+                        .HasForeignKey("MovieFK")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProjMediaCollection.Domain.Film.MoviePlaylist")
