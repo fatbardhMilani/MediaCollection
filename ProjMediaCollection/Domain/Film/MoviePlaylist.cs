@@ -14,6 +14,7 @@ namespace ProjMediaCollection.Domain.Film
         public IdentityUser User { get; set; }
         [ForeignKey("User")]
         public string UserId { get; set; }
+
         public ICollection<UserMovie> UserMovie { get; set; }
         [ForeignKey("UserMovieId")]
         public int UserMovieId { get; set; }

@@ -1,0 +1,24 @@
+﻿@model ProjMediaCollection.Models.MusicViewModels.AlbumIndexViewModel
+
+
+<a asp-action="CreateAlbum" asp-controller="Music">Create new album</a>
+<table class="table">
+
+    @foreach (var album in Model.AlbumList)
+    {
+        <tr>
+            <td>
+                @if (album.Cover != null)
+                {<a asp-controller="Music" asp-action="DetailAlbum" asp-route-id="@album.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(album.Cover)" width="280" height="410" /></a>
+
+                }
+                else
+                {
+                    <p>Geen foto beschikbaar</p>
+                }
+            </td>
+            <td>@album.Titel</td>
+        </tr>
+    }
+
+</table>

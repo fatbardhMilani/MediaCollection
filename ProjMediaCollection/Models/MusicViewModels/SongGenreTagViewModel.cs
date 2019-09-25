@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjMediaCollection.Domain.Muziek
+namespace ProjMediaCollection.Models.MusicViewModels
 {
-    public class MusicGenre
+    public class SongGenreTagViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<SongGenre> SongGenres { get; set; }
+        public bool Checked { get; set; }
     }
 }

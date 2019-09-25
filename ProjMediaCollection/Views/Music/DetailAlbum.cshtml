@@ -1,0 +1,28 @@
+﻿@model ProjMediaCollection.Models.MusicViewModels.DetailAlbumViewModel
+
+<strong>Title</strong>
+<p>@Model.Title</p>
+<strong>Cover</strong>
+
+@if (Model.Cover != null)
+{
+    <p><img src="data:image;base64,@System.Convert.ToBase64String(Model.Cover)" width="280" height="410" /></p>
+}
+else
+{
+    <p>Geen foto beschikbaar</p>
+}
+
+<strong>Songs</strong>
+@foreach (var song in Model.SongsToAddToAlbum)
+{
+    <p>@song.Title</p>
+    <a asp-action="DetailSong" asp-controller="Music" asp-route-id="@song.Id">Detail</a>
+}
+
+<form method="post">
+    <a asp-action="EditAlbum" asp-controller="Music" asp-route-id="@Model.Id">Edit</a>
+    <a asp-action="AddSong" asp-controller="Music" asp-route-id="@Model.Id">Add song</a>
+    @*<button class="btn btn-primary" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>*@
+
+</form>

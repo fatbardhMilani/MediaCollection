@@ -1,0 +1,14 @@
+﻿@model ProjMediaCollection.Models.MusicViewModels.DetailSongViewModel
+
+    <form asp-action="DetailSong" asp-controller="Music" asp-route-id="@Model.Id">
+
+        <strong>Title</strong>
+        <p>@Model.Title</p>
+
+        <p><strong>Genre</strong></p>
+        @foreach (var item in Model.SongGenreTagsDetail)
+        {
+            <p>@item.Name</p>
+        }
+
+    </form>

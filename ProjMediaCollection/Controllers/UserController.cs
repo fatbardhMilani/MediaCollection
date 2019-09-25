@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjMediaCollection.Data;
@@ -22,6 +23,7 @@ namespace ProjMediaCollection.Controllers
             _applicationDbContext = applicationDbContext;
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult CreateMovieList(CreateMovieListViewModel model )
         {
@@ -44,11 +46,13 @@ namespace ProjMediaCollection.Controllers
             return RedirectToAction("MyMovieIndex");
         }
 
+        [Authorize]
         public IActionResult CreateMovieList()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult AddToPlaylist(int id, AddMovieViewModel model)
         {
@@ -77,23 +81,23 @@ namespace ProjMediaCollection.Controllers
 
             return View(model);
         }
+        //[Authorize]
+        //public IActionResult AddMovie()
+        //{
+        //    var model = new IndexMovieViewModel();
 
-        public IActionResult AddMovie()
-        {
-            var model = new IndexMovieViewModel();
+        //    List<SelectListItem> PlaylistToSelect = new List<SelectListItem>();
+        //    foreach(var item in _applicationDbContext.MoviePlaylists.ToList())
+        //    {
+        //        PlaylistToSelect.Add(new SelectListItem { Value = item.Name, Text = item.Name });
+        //    }
+        //    model.MoviePlaylistToSelect = PlaylistToSelect;
 
-            List<SelectListItem> PlaylistToSelect = new List<SelectListItem>();
-            foreach(var item in _applicationDbContext.MoviePlaylists.ToList())
-            {
-                PlaylistToSelect.Add(new SelectListItem { Value = item.Name, Text = item.Name });
-            }
-            model.MoviePlaylistToSelect = PlaylistToSelect;
-
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
 
-
+        [Authorize]
         public IActionResult MyMovieIndex()
         {
             var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -105,47 +109,26 @@ namespace ProjMediaCollection.Controllers
                 .Include(x => x.UserMovie)
                     .ThenInclude(x => x.Movie)
                 .ToList();
-            //var cover = userMoviesListDb.First().UserMovie.First().Movie.Cover;
 
             List<MyMovieplaylistViewModel> movieList = new List<MyMovieplaylistViewModel>();
-            List<MyMoviesListViewModel> moviesInList = new List<MyMoviesListViewModel>();
-
-
-            foreach (var item in userMoviesListDb)
-            {
-                var y = new MyMoviesListViewModel()
-                {
-                    Cover = item.UserMovie.FirstOrDefault().Movie.Cover,
-                    Title = item.UserMovie.FirstOrDefault().Movie.Title
-                };
-
-                moviesInList.Add(y);
-
-            }
-
-            foreach (var item in userMoviesListDb)
-            {
-
-                var x = new MyMovieplaylistViewModel()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    MyMoviesLists = moviesInList
-                    //Cover = item.UserMovie.FirstOrDefault().Movie.Cover
-                };
-                //myMovieIndex.MyMoviePlayList.Add(new MyMovieplaylistViewModel()
-                //{
-                //    Id = item.Id,
-                //    Name = item.Name,
-                //    Cover = item.UserMovie.FirstOrDefault().Movie.Cover
-                //    //Cover = item.UserMovie.SingleOrDefault(x=> x.MoviePlaylistId == item.Id).Movie.Cover
-                //});
-
-                movieList.Add(x);
-            }
-
             
+            foreach (var item in userMoviesListDb)
+            {
+                
+                List<MyMoviesListViewModel> moviesInList = new List<MyMoviesListViewModel>();
+                foreach (var movie in _applicationDbContext.UserMovies.Where(x=>x.MoviePlaylistId==item.Id))
+                {
+                    moviesInList.Add(new MyMoviesListViewModel()
+                    {
+                        Id = movie.Id,
+                        Cover = movie.Movie.Cover,
+                        Releas = movie.Movie.Releas,
+                        Title = movie.Movie.Title
+                    });
+                }
+                movieList.Add(new MyMovieplaylistViewModel() { Id = item.Id, MyMoviesLists = moviesInList, Name = item.Name });
 
+            }
             myMovieIndex.MyMoviePlayList = movieList;
 
             return View(myMovieIndex);

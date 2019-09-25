@@ -10,7 +10,7 @@ namespace ProjMediaCollection.Models.UserViewModels
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public List<MyMoviesListViewModel> MyMoviesLists = new List<MyMoviesListViewModel>();
+        public List<MyMoviesListViewModel> MyMoviesLists { get; set; }
 
 
         //public int Id { get; set; }
