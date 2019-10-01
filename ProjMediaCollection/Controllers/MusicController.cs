@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjMediaCollection.Data;
 using ProjMediaCollection.Domain.Muziek;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ProjMediaCollection.Controllers
@@ -74,6 +76,17 @@ namespace ProjMediaCollection.Controllers
                     Cover = album.Cover
                 });
             }
+
+
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            List<SelectListItem> PlaylistToSelect = new List<SelectListItem>();
+            foreach (var item in _applicationDbContext.MyMusicPlaylists.Where(x => x.UserId == userName).ToList())
+            {
+                PlaylistToSelect.Add(new SelectListItem { Value = item.Id.ToString(), Text = item.PlaylistName });
+            }
+            albumIndex.MyMusicPlaylistToSelect = PlaylistToSelect;
+
             return View(albumIndex);
         }
 

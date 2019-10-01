@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191001094914_MymMusicPlaylistFK")]
+    partial class MymMusicPlaylistFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -414,7 +416,7 @@ namespace ProjMediaCollection.Data.Migrations
 
                     b.Property<int>("AlbumId");
 
-                    b.Property<int>("MyMusicPlaylistFK");
+                    b.Property<int?>("MyMusicPlaylistFK");
 
                     b.Property<int>("MyMusicPlaylistId");
 
@@ -695,9 +697,8 @@ namespace ProjMediaCollection.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProjMediaCollection.Domain.Muziek.MyMusicPlaylist", "MyMusicPlaylist")
-                        .WithMany("MyAlbum")
-                        .HasForeignKey("MyMusicPlaylistFK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("MyMusicPlaylistFK");
                 });
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.MyMusicPlaylistSong", b =>

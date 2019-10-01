@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191001071713_klas")]
+    partial class klas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -414,15 +416,13 @@ namespace ProjMediaCollection.Data.Migrations
 
                     b.Property<int>("AlbumId");
 
-                    b.Property<int>("MyMusicPlaylistFK");
-
                     b.Property<int>("MyMusicPlaylistId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
 
-                    b.HasIndex("MyMusicPlaylistFK");
+                    b.HasIndex("MyMusicPlaylistId");
 
                     b.ToTable("MusicPlaylistAlbums");
                 });
@@ -438,6 +438,8 @@ namespace ProjMediaCollection.Data.Migrations
                     b.Property<int>("SongId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MyMusicPlaylistId");
 
                     b.HasIndex("SongId");
 
@@ -694,14 +696,19 @@ namespace ProjMediaCollection.Data.Migrations
                         .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ProjMediaCollection.Domain.Muziek.MyMusicPlaylist", "MyMusicPlaylist")
+                    b.HasOne("ProjMediaCollection.Domain.Muziek.MyMusicPlaylist")
                         .WithMany("MyAlbum")
-                        .HasForeignKey("MyMusicPlaylistFK")
+                        .HasForeignKey("MyMusicPlaylistId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.MyMusicPlaylistSong", b =>
                 {
+                    b.HasOne("ProjMediaCollection.Domain.Muziek.MyMusicPlaylist")
+                        .WithMany("MySong")
+                        .HasForeignKey("MyMusicPlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ProjMediaCollection.Domain.Muziek.Song", "Song")
                         .WithMany()
                         .HasForeignKey("SongId")

@@ -18,6 +18,20 @@
                 }
             </td>
             <td>@album.Titel</td>
+
+            <td>
+                <form asp-action="AddAlbumToPlaylist" asp-controller="User" asp-route-id="@album.Id" method="post">
+                    <div class=" form-group">
+                        <label asp-for="SelectedMyMusicPlaylist"></label>
+                        <select class="form-control" asp-for="SelectedMyMusicPlaylist" asp-items="Model.MyMusicPlaylistToSelect"></select>
+                        <span class="text-danger" asp-validation-for="MyMusicPlaylistToSelect"></span> 
+                    </div>
+                    <button class="btn btn-primary" type="submit">Add to playlist</button>
+                </form>
+
+            </td>
+
+
         </tr>
     }
 

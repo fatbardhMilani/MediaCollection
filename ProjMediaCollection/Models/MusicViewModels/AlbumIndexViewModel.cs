@@ -9,7 +9,7 @@ namespace ProjMediaCollection.Models.MusicViewModels
     public class AlbumIndexViewModel
     {
         public List<AlbumListViewModel> AlbumList = new List<AlbumListViewModel>();
-        public List<SelectListItem> MyMusicPlayList { get; set; }
+        public List<SelectListItem> MyMusicPlaylistToSelect { get; set; }
         public string SelectedMyMusicPlaylist { get; set; }
     }
 }

@@ -151,5 +151,70 @@ namespace ProjMediaCollection.Controllers
         {
             return View();
         }
+
+        public IActionResult MyMusicIndex()
+        {
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            MyMovieIndexViewModel myMovieIndex = new MyMovieIndexViewModel();
+            IEnumerable<MoviePlaylist> userMoviesListDb = _applicationDbContext.MoviePlaylists
+                .Where(x => x.UserId == userName)
+                .Include(x => x.User)
+                .Include(x => x.UserMovie)
+                    .ThenInclude(x => x.Movie)
+                .ToList();
+
+            List<MyMovieplaylistViewModel> movieList = new List<MyMovieplaylistViewModel>();
+
+            foreach (var item in userMoviesListDb)
+            {
+
+                List<MyMoviesListViewModel> musicInList = new List<MyMoviesListViewModel>();
+                foreach (var movie in _applicationDbContext.MusicPlaylistAlbums.Where(x => x.MyMusicPlaylistId == item.Id))
+                {
+                    musicInList.Add(new MyMoviesListViewModel()
+                    {
+                        Id = movie.Id,
+                        Cover = movie.Album.Cover,
+                        Title = movie.Album.Titel,
+                    });
+                }
+                movieList.Add(new MyMovieplaylistViewModel() { Id = item.Id, MyMoviesLists = musicInList, Name = item.Name });
+
+            }
+            myMovieIndex.MyMoviePlayList = movieList;
+
+            return View(myMovieIndex);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddAlbumToPlaylist(int id, AddAlbumViewModel model)
+        {
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            MyMusicPlaylist musicPlaylist = _applicationDbContext.MyMusicPlaylists
+                .Include(x => x.MyAlbum)
+                //.ThenInclude(x => x.MoviePlaylist)
+                .FirstOrDefault(x => x.Id.ToString() == model.SelectedMusicPlaylist);
+
+            var playlistAlbum = new MyMusicPlaylistAlbum
+            {
+                AlbumId = id,
+                MyMusicPlaylistId = Convert.ToInt32(model.SelectedMusicPlaylist),
+            };
+
+            var musicToPlaylist = new MyMusicPlaylist
+            {
+                UserId = userName,
+                PlaylistName = model.SelectedMusicPlaylist,
+                //UserMovie = model.MovieId
+
+            };
+            _applicationDbContext.MusicPlaylistAlbums.Add(playlistAlbum);
+            _applicationDbContext.SaveChanges();
+
+            return View(model);
+        }
     }
 }

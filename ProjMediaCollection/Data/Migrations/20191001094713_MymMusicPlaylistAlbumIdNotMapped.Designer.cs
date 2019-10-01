@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191001094713_MymMusicPlaylistAlbumIdNotMapped")]
+    partial class MymMusicPlaylistAlbumIdNotMapped
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -414,15 +416,11 @@ namespace ProjMediaCollection.Data.Migrations
 
                     b.Property<int>("AlbumId");
 
-                    b.Property<int>("MyMusicPlaylistFK");
-
                     b.Property<int>("MyMusicPlaylistId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
-
-                    b.HasIndex("MyMusicPlaylistFK");
 
                     b.ToTable("MusicPlaylistAlbums");
                 });
@@ -692,11 +690,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.HasOne("ProjMediaCollection.Domain.Muziek.Album", "Album")
                         .WithMany()
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProjMediaCollection.Domain.Muziek.MyMusicPlaylist", "MyMusicPlaylist")
-                        .WithMany("MyAlbum")
-                        .HasForeignKey("MyMusicPlaylistFK")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

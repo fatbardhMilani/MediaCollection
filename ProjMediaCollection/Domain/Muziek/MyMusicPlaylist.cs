@@ -18,6 +18,8 @@ namespace ProjMediaCollection.Domain.Muziek
         public ICollection<MyMusicPlaylistAlbum> MyAlbum { get; set; }
         [ForeignKey("MyMusicPlayListAlbum")]
         public int MyMusicPlayListAlbumId { get; set; }
+
+        [NotMapped]
         public ICollection<MyMusicPlaylistSong> MySong { get; set; }
         [ForeignKey("MyMusicPlayListSong")]
         public int MyMusicPlayListSongId { get; set; }

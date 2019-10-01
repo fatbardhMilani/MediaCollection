@@ -9,7 +9,7 @@ namespace ProjMediaCollection.Domain.Muziek
     public class MyMusicPlaylistAlbum
     {
         public int Id { get; set; }
-        [NotMapped]
+
         [ForeignKey("MyMusicPlaylistFK")]
         public MyMusicPlaylist MyMusicPlaylist { get; set; }
 
