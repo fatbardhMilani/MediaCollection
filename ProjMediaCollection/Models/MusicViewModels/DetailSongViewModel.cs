@@ -9,6 +9,8 @@ namespace ProjMediaCollection.Models.MusicViewModels
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string Artist { get; set; }
+        public DateTime Release { get; set; }
         public List<SongGenreTagDetailViewModel> SongGenreTagsDetail { get; set; }
         //public ICollection<MusicGenre> GenresSong { get; set; }
         //public Artist Artist { get; set; }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190926075501_home")]
+    partial class home
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -385,65 +387,6 @@ namespace ProjMediaCollection.Data.Migrations
                     );
                 });
 
-            modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.MyMusicPlaylist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("MyMusicPlayListAlbumId");
-
-                    b.Property<int>("MyMusicPlayListSongId");
-
-                    b.Property<string>("PlaylistName");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MyMusicPlaylists");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.MyMusicPlaylistAlbum", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AlbumId");
-
-                    b.Property<int>("MyMusicPlaylistId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AlbumId");
-
-                    b.HasIndex("MyMusicPlaylistId");
-
-                    b.ToTable("MusicPlaylistAlbums");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.MyMusicPlaylistSong", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("MyMusicPlaylistId");
-
-                    b.Property<int>("SongId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MyMusicPlaylistId");
-
-                    b.HasIndex("SongId");
-
-                    b.ToTable("MyMusicPlaylistSongs");
-                });
-
             modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.Song", b =>
                 {
                     b.Property<int>("Id")
@@ -451,10 +394,6 @@ namespace ProjMediaCollection.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AlbumId");
-
-                    b.Property<string>("Artist");
-
-                    b.Property<DateTime>("Release");
 
                     b.Property<string>("Titel");
 
@@ -677,39 +616,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.HasOne("ProjMediaCollection.Domain.Muziek.Artist", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.MyMusicPlaylist", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.MyMusicPlaylistAlbum", b =>
-                {
-                    b.HasOne("ProjMediaCollection.Domain.Muziek.Album", "Album")
-                        .WithMany()
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProjMediaCollection.Domain.Muziek.MyMusicPlaylist")
-                        .WithMany("MyAlbum")
-                        .HasForeignKey("MyMusicPlaylistId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Muziek.MyMusicPlaylistSong", b =>
-                {
-                    b.HasOne("ProjMediaCollection.Domain.Muziek.MyMusicPlaylist")
-                        .WithMany("MySong")
-                        .HasForeignKey("MyMusicPlaylistId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProjMediaCollection.Domain.Muziek.Song", "Song")
-                        .WithMany()
-                        .HasForeignKey("SongId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

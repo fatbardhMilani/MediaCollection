@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace ProjMediaCollection.Domain.Muziek
 {
-    public class Song
+    public class MyMusicPlaylistAlbum
     {
         public int Id { get; set; }
-        public string Titel { get; set; }
         [NotMapped]
-        public ICollection<SongGenre> GenresSong { get; set; }
-        public string Artist { get; set; }
-        public DateTime Release { get; set; }
-        //public Artist Artist { get; set; }
-        //[ForeignKey("Artist")]
-        //public int ArtistId { get; set; }
+        [ForeignKey("MyMusicPlaylistFK")]
+        public MyMusicPlaylist MyMusicPlaylist { get; set; }
+
+        public int MyMusicPlaylistId { get; set; }
+
         public Album Album { get; set; }
         [ForeignKey("Album")]
+
         public int AlbumId { get; set; }
     }
 }

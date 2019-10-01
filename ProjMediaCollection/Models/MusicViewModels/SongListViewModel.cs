@@ -9,5 +9,7 @@ namespace ProjMediaCollection.Models.MusicViewModels
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string Artist { get; set; }
+        public DateTime Release { get; set; }
     }
 }

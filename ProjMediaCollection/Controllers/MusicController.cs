@@ -90,6 +90,8 @@ namespace ProjMediaCollection.Controllers
                 var newSongToAlbum = new SongListViewModel()
                 {
                     Title = song.Titel,
+                    Artist = song.Artist,
+                    Release = song.Release,
                     Id = song.Id
                 };
                 addSongs.Add(newSongToAlbum);
@@ -167,7 +169,10 @@ namespace ProjMediaCollection.Controllers
             {
                 //Id = model.Id,
                 Titel = model.Title,
+                Artist = model.Artist,
+                Release = model.Release,
                 AlbumId = id
+
             };
             _applicationDbContext.Songs.Add(newSong);
             _applicationDbContext.SaveChanges();
@@ -210,26 +215,43 @@ namespace ProjMediaCollection.Controllers
             //SIMON zeg lijst eerst van songs en includen//
 
             Song songFromDb = _applicationDbContext.Songs
+
                 //.Include(x => x.GenresSong)
-                    //.ThenInclude(x => x.MusicGenre)
+                //    .ThenInclude(x => x.MusicGenre)
                 .SingleOrDefault(x => x.Id == id);
 
             List<SongGenreTagDetailViewModel> songGenreTagDetails = new List<SongGenreTagDetailViewModel>();
 
-            foreach (var genre in songFromDb.GenresSong.Select(x => x.MusicGenre))
+            foreach (var genre in _applicationDbContext.SongGenres.Include(x =>x.MusicGenre).Where(x => x.SongId == id))
             {
                 var songGenreToDetail = new SongGenreTagDetailViewModel()
                 {
-                    Name = genre.Name
+                    Name = genre.MusicGenre.Name
                 };
 
                 songGenreTagDetails.Add(songGenreToDetail);
             }
 
+
+            //List<SongGenreTagDetailViewModel> songGenreTagDetails = new List<SongGenreTagDetailViewModel>();
+
+            //foreach (var genre in songFromDb.GenresSong.Select(x => x.MusicGenre))
+            //{
+            //    var songGenreToDetail = new SongGenreTagDetailViewModel()
+            //    {
+            //        Name = genre.Name
+            //    };
+
+            //    songGenreTagDetails.Add(songGenreToDetail);
+            //}
+
             DetailSongViewModel model = new DetailSongViewModel()
             {
                 Title = songFromDb.Titel,
+                Artist = songFromDb.Artist,
+                Release = songFromDb.Release,
                 SongGenreTagsDetail = songGenreTagDetails
+
             };
 
             return View(model);

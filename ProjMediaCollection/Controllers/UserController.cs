@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjMediaCollection.Data;
 using ProjMediaCollection.Domain.Film;
+using ProjMediaCollection.Domain.Muziek;
 using ProjMediaCollection.Models.MovieViewModels;
 using ProjMediaCollection.Models.UserViewModels;
 using System;
@@ -23,6 +24,7 @@ namespace ProjMediaCollection.Controllers
             _applicationDbContext = applicationDbContext;
         }
 
+        //UserMovies////////////////////////////////////////
         [Authorize]
         [HttpPost]
         public IActionResult CreateMovieList(CreateMovieListViewModel model )
@@ -81,21 +83,6 @@ namespace ProjMediaCollection.Controllers
 
             return View(model);
         }
-        //[Authorize]
-        //public IActionResult AddMovie()
-        //{
-        //    var model = new IndexMovieViewModel();
-
-        //    List<SelectListItem> PlaylistToSelect = new List<SelectListItem>();
-        //    foreach(var item in _applicationDbContext.MoviePlaylists.ToList())
-        //    {
-        //        PlaylistToSelect.Add(new SelectListItem { Value = item.Name, Text = item.Name });
-        //    }
-        //    model.MoviePlaylistToSelect = PlaylistToSelect;
-
-        //    return View(model);
-        //}
-
 
         [Authorize]
         public IActionResult MyMovieIndex()
@@ -132,6 +119,37 @@ namespace ProjMediaCollection.Controllers
             myMovieIndex.MyMoviePlayList = movieList;
 
             return View(myMovieIndex);
+        }
+        //UserMusic////////////////////////////////////////////////////
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateMusicPlaylist(CreateMusicPlaylistViewModel model)
+        {
+            if (!TryValidateModel(model))
+            {
+                return View(model);
+            }
+
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            MyMusicPlaylist musicPlaylist = new MyMusicPlaylist
+            {
+                PlaylistName = model.MusicPlaylistName,
+                UserId = userName
+            };
+
+            _applicationDbContext.MyMusicPlaylists.Add(musicPlaylist);
+            _applicationDbContext.SaveChanges();
+
+            return View("CreateMusicPlaylist");
+
+        }
+
+        [Authorize]
+        public IActionResult CreateMusicPlaylist()
+        {
+            return View();
         }
     }
 }

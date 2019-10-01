@@ -21,12 +21,15 @@ namespace ProjMediaCollection.Data
         public DbSet<MoviePlaylist> MoviePlaylists { get; set; }
         //Muziek DbSet//
         public DbSet<Album> Albums { get; set; }
-        public DbSet<AlbumArtist> AlbumArtists {get;set;}
+        public DbSet<AlbumArtist> AlbumArtists { get; set; }
         public DbSet<Artist> Artists { get; set; }
         public DbSet<MusicGenre> MusicGenres { get; set; }
         public DbSet<Song> Songs { get; set; }
-        public DbSet<SongArtist> SongArtists { get; set;}
+        public DbSet<SongArtist> SongArtists { get; set; }
         public DbSet<SongGenre> SongGenres { get; set; }
+        public DbSet<MyMusicPlaylist> MyMusicPlaylists { get; set; }
+        public DbSet<MyMusicPlaylistAlbum> MusicPlaylistAlbums { get; set; }
+        public DbSet<MyMusicPlaylistSong> MyMusicPlaylistSongs {get;set;}
         //Series DbSet//
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<Season> Seasons { get; set; }
