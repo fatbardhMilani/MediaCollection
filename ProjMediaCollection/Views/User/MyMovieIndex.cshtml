@@ -25,7 +25,7 @@
             @movie.Id
             @if (movie.Cover != null)
             {
-                <a asp-controller="Movie" asp-action="detailmovie" asp-route-id="@movie.Id">  <img src="data:image;base64,@System.Convert.ToBase64String(movie.Cover)" width="280" height="410" /></a>
+                <a asp-controller="Movie" asp-action="detailmovie" asp-route-id="@movie.Id">  <img src="data:image;base64,@System.Convert.ToBase64String(movie.Cover)" width="160" height="205" /></a>
             }
             else
             {

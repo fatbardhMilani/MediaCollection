@@ -9,8 +9,8 @@ namespace ProjMediaCollection.Domain.Muziek
     public class MyMusicPlaylistAlbum
     {
         public int Id { get; set; }
-
-        [ForeignKey("MyMusicPlaylistFK")]
+        [NotMapped]
+        [ForeignKey("MyMusicPlaylistAlbumFK")]
         public MyMusicPlaylist MyMusicPlaylist { get; set; }
 
         public int MyMusicPlaylistId { get; set; }

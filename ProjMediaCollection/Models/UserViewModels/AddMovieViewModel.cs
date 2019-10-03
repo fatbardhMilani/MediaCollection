@@ -9,7 +9,6 @@ namespace ProjMediaCollection.Models.UserViewModels
     public class AddMovieViewModel
     {
         public int PlaylistId { get; set; }
-        //public string UserId { get; set; }
         public int MovieId { get; set; }
         public string UserId { get; set; }
 

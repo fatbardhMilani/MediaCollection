@@ -1,0 +1,47 @@
+﻿@model ProjMediaCollection.Models.SerieViewModels.DetailSerieViewModel
+
+<strong>Title</strong>
+<p>@Model.Title</p>
+
+@if (Model.Cover != null)
+{
+    <p><img src="data:image;base64,@System.Convert.ToBase64String(Model.Cover)" width="280" height="410" /></p>
+}
+else
+{
+    <p> geen foto beschikbaar</p>
+}
+
+<strong>Genre</strong>
+@foreach (var item in Model.SerieGenreTagDetails)
+{
+    <p>@item.Name</p>
+}
+
+<strong>Seasons</strong>
+@if (Model.SeasonsToAddToSerie != null)
+{
+
+    @foreach (var season in Model.SeasonsToAddToSerie)
+    {
+        if (season != null)
+        {
+            <p>@season.Title</p>
+        }
+
+        <p><a asp-controller="Serie" asp-action="DetailSeason" asp-route-id="@season.Id"><img src="data:image;base64,@System.Convert.ToBase64String(season.Cover)" width="160" height="205" /></a></p>
+
+        @*<a asp-action="DetailSerie" asp-controller="Serie" asp-route-id="@season.Id">Detail</a>*@
+    }
+
+}
+
+
+<form method="post">
+    @*<a asp-action="EditAlbum" asp-controller="Music" asp-route-id="@Model.Id">Edit</a>*@
+    <a asp-action="AddSeason" asp-controller="Serie" asp-route-id="@Model.Id">Add Season</a>
+    @*<button class="btn btn-primary" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>*@
+
+</form>
+
+

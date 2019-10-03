@@ -13,18 +13,18 @@
     </tr>
     @foreach (var item in Model.MyMusicPlaylist)
     {
-        @foreach (var movie in item.MySelectedMusic)
+        @foreach (var album in item.MySelectedMusic)
         {
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Name</td>
 
-                <td>@Html.Label(movie.Title)</td>
+                <td>@Html.Label(album.Title)</td>
                 <td>
-                    @movie.Id
-                    @if (movie.Cover != null)
+                    @album.Id
+                    @if (album.Cover != null)
                     {
-                        <a asp-controller="movie" asp-action="DetailAlbum" asp-route-id="@movie.Id">  <img src="data:image;base64,@System.Convert.ToBase64String(movie.Cover)" width="280" height="410" /></a>
+                        <a asp-controller="music" asp-action="DetailAlbum" asp-route-id="@album.AlbumId">  <img src="data:image;base64,@System.Convert.ToBase64String(album.Cover)" width="160" height="205" /></a>
                     }
                     else
                     {

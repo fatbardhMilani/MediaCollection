@@ -1,7 +1,7 @@
 ﻿@model ProjMediaCollection.Models.SerieViewModels.IndexSerieViewModel
 
 
-<a asp-action="CreateAlbum" asp-controller="Music">Create new album</a>
+<a asp-action="CreateSerie" asp-controller="Serie">Create new serie</a>
 <table class="table">
 
     @foreach (var serie in Model.SerieList)
@@ -9,7 +9,7 @@
         <tr>
             <td>
                 @if (serie.Cover != null)
-                {<a asp-controller="Music" asp-action="DetailAlbum" asp-route-id="@serie.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(serie.Cover)" width="280" height="410" /></a>
+                {<a asp-controller="Serie" asp-action="DetailSerie" asp-route-id="@serie.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(serie.Cover)" width="160" height="205" /></a>
 
                 }
                 else

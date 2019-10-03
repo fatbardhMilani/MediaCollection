@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjMediaCollection.Data;
 using ProjMediaCollection.Domain.Series;
 using ProjMediaCollection.Models.SerieViewModels;
@@ -19,6 +20,7 @@ namespace ProjMediaCollection.Controllers
         {
             _applicationDbContext = applicationDbContext;
         }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateSerie(CreateSerieViewModel model)
@@ -63,7 +65,7 @@ namespace ProjMediaCollection.Controllers
                 _applicationDbContext.SaveChanges();
             }
 
-            return View("IndexSerie");
+            return RedirectToAction("IndexSerie");
         }
 
         [Authorize]
@@ -107,6 +109,150 @@ namespace ProjMediaCollection.Controllers
             //albumIndex.MyMusicPlaylistToSelect = PlaylistToSelect;
 
             return View(serieIndex);
+        }
+        
+        public IActionResult DetailSerie(int id)
+        {
+            Serie serieFromDb = _applicationDbContext.Series
+                //.Include(x => x.SerieGenres)
+                //    .ThenInclude(x => x.SeriesGenre)
+                //.Include(x => x.SerieSeasons)
+                .SingleOrDefault(x => x.Id == id);
+
+            List<SerieGenreTagDetailViewModel> genres = new List<SerieGenreTagDetailViewModel>();
+
+            foreach (var item in _applicationDbContext.SerieGenresSeries.Include(x => x.SeriesGenre).Where(x => x.SerieId == id))
+            {
+                genres.Add(new SerieGenreTagDetailViewModel { Name = item.SeriesGenre.Name });
+            }
+
+
+            List<SeasonListViewModel> seasonList = new List<SeasonListViewModel>();
+
+            foreach (var item in _applicationDbContext.Seasons)
+            {
+                seasonList.Add(new SeasonListViewModel
+                {
+                    Cover = item.Cover,
+                    Title = item.Title,
+                    Id = item.Id,
+                    Description = item.Description
+                });
+            }
+
+            DetailSerieViewModel serieDetail = new DetailSerieViewModel()
+            {
+                Id = id,
+                Cover = serieFromDb.Cover,
+                Title = serieFromDb.Title,
+                SerieGenreTagDetails = genres,
+                SeasonsToAddToSerie = seasonList
+            };
+
+            return View(serieDetail);
+        }
+
+        [Route("season/{id}")]
+        public IActionResult DetailSeason(int id)
+        {
+            Season seasonFromDb = _applicationDbContext.Seasons.SingleOrDefault(x => x.Id == id);
+
+            List<EpisodeListViewModel> episodeList = new List<EpisodeListViewModel>();
+
+            foreach (var item in _applicationDbContext.Episodes)
+            {
+                episodeList.Add(new EpisodeListViewModel
+                {
+                    Picture = item.Picture,
+                    Title = item.Title,
+                    Description = item.Description,
+                    //Id = item.Id
+                });
+            }
+
+            DetailSeasonViewModel seasonDetail = new DetailSeasonViewModel()
+            {
+                EpisodesToAddToSeason = episodeList,
+                SeasonId = id
+            };
+
+            return View(seasonDetail);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddSeason(int id, AddSeasonViewModel model)
+        {
+            if (!TryValidateModel(model))
+            {
+                return View(model);
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                try
+                {
+                    await model.Cover.CopyToAsync(memoryStream);
+                }
+                catch {}
+
+                var addSeason = new Season()
+                {
+                    Title = model.Title,
+                    Cover = memoryStream.ToArray(),
+                    Description = model.Description,
+                    SerieId = id
+                };
+
+                _applicationDbContext.Seasons.Add(addSeason);
+                _applicationDbContext.SaveChanges();
+
+                return RedirectToAction("DetailSerie", new { id = id });
+            }
+        }
+
+        [Authorize]
+        public IActionResult AddSeason()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddEpisode(int id, AddEpisodeViewModel model)
+        {
+            //if (TryValidateModel(model))
+            //{
+            //    return View(model);
+            //}
+
+            using (var memoryStream = new MemoryStream())
+            {
+                try
+                {
+                    await model.Picture.CopyToAsync(memoryStream);
+                }
+                catch{}
+
+                var addEpisode = new Episode()
+                {
+                    Title = model.Title,
+                    Picture = memoryStream.ToArray(),
+                    Description = model.Description,
+                    SeasonId = id,
+                };
+
+                _applicationDbContext.Episodes.Add(addEpisode);
+                _applicationDbContext.SaveChanges();
+            }
+
+            return RedirectToAction("DetailSeason", new { id =id });
+        }
+
+        [Authorize]
+        public IActionResult AddEpisode()
+        {
+            return View();
         }
     }
 }

@@ -1,0 +1,34 @@
+﻿@model ProjMediaCollection.Models.SerieViewModels.DetailSeasonViewModel
+
+<strong>Episodes</strong>
+@if (Model.EpisodesToAddToSeason != null)
+{
+
+    @foreach (var episode in Model.EpisodesToAddToSeason)
+    {
+        if (episode != null)
+        {   
+            <strong>Title</strong>
+            <p>@episode.Title</p>
+
+            <strong>Picture</strong>
+            <p><img src="data:image;base64,@System.Convert.ToBase64String(episode.Picture)" width="160" height="205" /></p>
+
+            <strong>Description</strong>
+            <p>@episode.Description</p>
+        }
+
+
+
+        @*<a asp-action="DetailSerie" asp-controller="Serie" asp-route-id="@season.Id">Detail</a>*@
+    }
+
+}
+
+
+<form method="post">
+    @*<a asp-action="EditAlbum" asp-controller="Music" asp-route-id="@Model.Id">Edit</a>*@
+    <a asp-action="AddEpisode" asp-controller="Serie" asp-route-id="@Model.SeasonId">Add Episode</a>
+    @*<button class="btn btn-primary" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>*@
+
+</form>

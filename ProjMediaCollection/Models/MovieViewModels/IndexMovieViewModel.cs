@@ -17,7 +17,6 @@ namespace ProjMediaCollection.Models.MovieViewModels
 
 
         public string SelectedMoviePlaylist { get; set; }
-        public List<SelectMoviePlaylistViewModel> SelectMoviePlaylistViews { get; set; }
         public List<SelectListItem> MoviePlaylistToSelect { get; set; }
     }
 }

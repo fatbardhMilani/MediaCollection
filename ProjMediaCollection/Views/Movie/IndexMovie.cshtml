@@ -39,6 +39,7 @@
         <th>Title</th>
         <th>Release</th>
     </tr>
+
     @foreach (var item in Model.MovieList)
     {
 
@@ -47,7 +48,7 @@
             <td>@item.Id</td>
             <td>
                 @if (item.Cover != null)
-                {<a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" width="280" height="410" /></a>
+                {<a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" width="160" height="205" /></a>
 
                 }
                 else
@@ -80,3 +81,46 @@
     }
 
 </table>
+
+
+
+        <!-- Grid column -->
+<div class="col-lg-4 col-md-6">
+
+    @foreach (var item in Model.MovieList)
+    {
+
+        <!--Card-->
+        <div class="card">
+
+            <!--Card image-->
+            <div class="view">
+                @if (item.Cover != null)
+                {
+                    <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" class="card-img-top" alt="photo">
+                    <a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id">
+                        <div class="mask rgba-white-slight"></div>
+                    </a>
+                }
+                else
+                {
+                    <p>Geen foto beschikbaar</p>
+                }
+            </div>
+
+            <!--Card content-->
+            <div class="card-body elegant-color white-text">
+                <!--Title-->
+                <h4 class="card-title">@item.Title</h4>
+                <!--Text-->
+                <p class="card-text white-text">
+                    @item.Release
+                </p>
+                <a href="#" class="btn btn-outline-white btn-md waves-effect">Button</a>
+            </div>
+
+        </div>
+    }
+        <!--/.Card-->
+
+</div>
