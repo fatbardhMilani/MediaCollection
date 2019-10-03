@@ -1,4 +1,4 @@
-﻿@model ProjMediaCollection.Models.UserViewModels.MyMusicIndexViewModel
+﻿@model ProjMediaCollection.Models.UserViewModels.MyMovieIndexViewModel
 
 @*<form asp-action="MyMovieIndex" asp-controller="User" method="get">
 
@@ -12,20 +12,20 @@
             <th>moviename</th>
             <th>covers</th>
         </tr>
-        @foreach (var item in Model.MyMusicPlaylist)
+        @foreach (var item in Model.MyMoviePlayList)
         {
-            @foreach (var music in item.MySelectedMusic)
+            @foreach (var movie in item.MyMoviesLists)
             {
     <tr>
         <td>@item.Id</td>
         <td>@item.Name</td>
 
-        <td>@Html.Label(music.Title)</td>
+        <td>@Html.Label(movie.Title)</td>
         <td>
-            @music.Id
-            @if (music.Cover != null)
+            @movie.Id
+            @if (movie.Cover != null)
             {
-                <a asp-controller="Music" asp-action="detailmovie" asp-route-id="@music.Id">  <img src="data:image;base64,@System.Convert.ToBase64String(music.Cover)" width="280" height="410" /></a>
+                <a asp-controller="Movie" asp-action="detailmovie" asp-route-id="@movie.Id">  <img src="data:image;base64,@System.Convert.ToBase64String(movie.Cover)" width="280" height="410" /></a>
             }
             else
             {

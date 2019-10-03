@@ -14,6 +14,6 @@ namespace ProjMediaCollection.Domain.Series
         public byte[] Cover { get; set; }
         public ICollection<Season> SerieSeasons { get; set; }
         [NotMapped]
-        public ICollection<SeriesGenre> SerieGenres { get; set; }
+        public ICollection<SerieGenresSerie> SerieGenres { get; set; }
     }
 }

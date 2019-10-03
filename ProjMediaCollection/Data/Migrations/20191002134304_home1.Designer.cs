@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191002134304_home1")]
+    partial class home1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -550,19 +552,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.ToTable("Series");
                 });
 
-            modelBuilder.Entity("ProjMediaCollection.Domain.Series.SerieGenresSerie", b =>
-                {
-                    b.Property<int>("SeriesGenreId");
-
-                    b.Property<int>("SerieId");
-
-                    b.HasKey("SeriesGenreId", "SerieId");
-
-                    b.HasIndex("SerieId");
-
-                    b.ToTable("SerieGenresSeries");
-                });
-
             modelBuilder.Entity("ProjMediaCollection.Domain.Series.SeriesGenre", b =>
                 {
                     b.Property<int>("Id")
@@ -768,19 +757,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.HasOne("ProjMediaCollection.Domain.Series.Serie", "Serie")
                         .WithMany("SerieSeasons")
                         .HasForeignKey("SerieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Series.SerieGenresSerie", b =>
-                {
-                    b.HasOne("ProjMediaCollection.Domain.Series.Serie", "Serie")
-                        .WithMany()
-                        .HasForeignKey("SerieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProjMediaCollection.Domain.Series.SeriesGenre", "SeriesGenre")
-                        .WithMany("Genre")
-                        .HasForeignKey("SeriesGenreId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

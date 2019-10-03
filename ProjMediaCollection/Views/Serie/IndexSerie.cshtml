@@ -1,0 +1,38 @@
+﻿@model ProjMediaCollection.Models.SerieViewModels.IndexSerieViewModel
+
+
+<a asp-action="CreateAlbum" asp-controller="Music">Create new album</a>
+<table class="table">
+
+    @foreach (var serie in Model.SerieList)
+    {
+        <tr>
+            <td>
+                @if (serie.Cover != null)
+                {<a asp-controller="Music" asp-action="DetailAlbum" asp-route-id="@serie.Id"> <img src="data:image;base64,@System.Convert.ToBase64String(serie.Cover)" width="280" height="410" /></a>
+
+                }
+                else
+                {
+                    <p>Geen foto beschikbaar</p>
+                }
+            </td>
+            <td>@serie.Title</td>
+
+            @*<td>
+                <form asp-action="AddAlbumToPlaylist" asp-controller="User" asp-route-id="@album.Id" method="post">
+                    <div class=" form-group">
+                        <label asp-for="SelectedMyMusicPlaylist"></label>
+                        <select class="form-control" asp-for="SelectedMyMusicPlaylist" asp-items="Model.MyMusicPlaylistToSelect"></select>
+                        <span class="text-danger" asp-validation-for="MyMusicPlaylistToSelect"></span>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Add to playlist</button>
+                </form>
+
+            </td>*@
+
+
+        </tr>
+    }
+
+</table>

@@ -35,6 +35,7 @@ namespace ProjMediaCollection.Data
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Serie> Series { get; set; }
         public DbSet<SeriesGenre> SeriesGenres { get; set;}
+        public DbSet<SerieGenresSerie> SerieGenresSeries { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -48,6 +49,7 @@ namespace ProjMediaCollection.Data
             builder.Entity<SongArtist>().HasKey(x => new { x.ArtistId, x.SongId });
             builder.Entity<AlbumArtist>().HasKey(x => new { x.ArtistId, x.AlbumId });
             builder.Entity<SongGenre>().HasKey(x => new { x.MusicGenreId, x.SongId });
+            builder.Entity<SerieGenresSerie>().HasKey(x => new { x.SeriesGenreId, x.SerieId });
 
             builder.Entity<MovieGenre>().HasData(
                 new MovieGenre { Id = 1, Name = "Sifi" },
