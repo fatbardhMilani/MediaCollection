@@ -8,12 +8,18 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+
+        @*<link rel="stylesheet" href="~/lib/bootstrap/New/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />*@
+
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+
     </environment>
 </head>
 <body>
@@ -36,8 +42,10 @@
                     <li><a asp-area="" asp-controller="Movie" asp-action="IndexMovie">Movies</a></li>
                     <li><a asp-area="" asp-controller="Music" asp-action="IndexAlbum">Music</a></li>
                     <li><a asp-area="" asp-controller="Serie" asp-action="IndexSerie">Series</a></li>
+
                     @if (User.Identity.IsAuthenticated)
                     {
+                        <li><a asp-area="" asp-controller="User" asp-action="MySerieIndex">My series</a></li>
                         <li><a asp-area="" asp-controller="User" asp-action="MyMusicIndex">My music</a></li>
                         <li><a asp-area="" asp-controller="User" asp-action="MyMovieIndex">My movies</a></li>
                     }
@@ -79,6 +87,21 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
+
+    <!-- Footer -->
+    <footer class="page-footer font-small blue">
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">
+            © 2018 Copyright:
+            <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

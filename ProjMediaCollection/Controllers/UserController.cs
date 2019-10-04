@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjMediaCollection.Data;
 using ProjMediaCollection.Domain.Film;
 using ProjMediaCollection.Domain.Muziek;
+using ProjMediaCollection.Domain.Series;
 using ProjMediaCollection.Models.MovieViewModels;
 using ProjMediaCollection.Models.UserViewModels;
 using System;
@@ -230,5 +231,113 @@ namespace ProjMediaCollection.Controllers
 
             return RedirectToAction("IndexAlbum","Music");
         }
+
+        /////////////////////SERIES////////////////////////
+
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateSeriePlaylist(CreateSeriePlaylistViewModel model)
+        {
+            if (!TryValidateModel(model))
+            {
+                return View(model);
+            }
+
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            MySeriePlaylist seriePlaylist = new MySeriePlaylist
+            {
+                PlaylistName = model.SeriePlaylistName,
+                UserId = userName
+            };
+
+            _applicationDbContext.MySeriePlaylists.Add(seriePlaylist);
+            _applicationDbContext.SaveChanges();
+
+            return RedirectToAction("CreateSeriePlaylist");
+
+        }
+
+        [Authorize]
+        public IActionResult CreateSeriePlaylist()
+        {
+            return View();
+        }
+
+
+        public IActionResult MySerieIndex()
+        {
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            MySerieIndexViewModel mySerieIndex = new MySerieIndexViewModel();
+            IEnumerable<MySeriePlaylist> userSerieListDb = _applicationDbContext.MySeriePlaylists
+                .Where(x => x.UserId == userName)
+                .Include(x => x.User)
+                .Include(x => x.MySerie)
+                    .ThenInclude(x => x.Serie)
+                .ToList();
+
+            List<MySeriePlaylistViewModel> serieList = new List<MySeriePlaylistViewModel>();
+
+            foreach (var item in userSerieListDb)
+            {
+
+                List<MySelectedSerieViewModel> serieInList = new List<MySelectedSerieViewModel>();
+                foreach (var serie in _applicationDbContext.MySeriePlaylistSeries.Where(x => x.MySeriePlaylistId == item.Id))
+                {
+                    serieInList.Add(new MySelectedSerieViewModel()
+                    {
+                        Id = serie.Id,
+                        Cover = serie.Serie.Cover,
+                        Title = serie.Serie.Title,
+                        SerieId = serie.SerieId
+                    });
+                }
+                serieList.Add(new MySeriePlaylistViewModel() { Id = item.Id, MySelectedSerie = serieInList, Name = item.PlaylistName });
+
+            }
+            mySerieIndex.MySeriePlaylist = serieList;
+
+            return View(mySerieIndex);
+        }
+
+
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddSerieToPlaylist(int id, string SelectedMySeriePlaylist)
+        {
+
+
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            MySeriePlaylist seriePlaylist = _applicationDbContext.MySeriePlaylists
+                .Include(x => x.MySerie)
+                //.ThenInclude(x => x.MoviePlaylist)
+                .FirstOrDefault(x => x.Id.ToString() == SelectedMySeriePlaylist);
+
+            var playlistSerie = new MySeriePlaylistSerie
+            {
+                SerieId = id,
+                MySeriePlaylistId = Convert.ToInt32(SelectedMySeriePlaylist),
+            };
+
+            var serieToPlaylist = new MySeriePlaylist
+            {
+                Id = id,
+                UserId = userName,
+                PlaylistName = SelectedMySeriePlaylist,
+                MySerie = seriePlaylist.MySerie,
+                MySeriePlaylistSerieId = seriePlaylist.MySeriePlaylistSerieId,
+
+            };
+            _applicationDbContext.MySeriePlaylistSeries.Add(playlistSerie);
+            _applicationDbContext.SaveChanges();
+
+            return RedirectToAction("IndexSerie", "Serie");
+        }
+
+
     }
 }

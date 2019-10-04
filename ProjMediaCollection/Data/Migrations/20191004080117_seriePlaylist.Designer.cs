@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191004080117_seriePlaylist")]
+    partial class seriePlaylist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -510,44 +512,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.ToTable("Episodes");
                 });
 
-            modelBuilder.Entity("ProjMediaCollection.Domain.Series.MySeriePlaylist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("MySeriePlaylistSerieId");
-
-                    b.Property<string>("PlaylistName");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MySeriePlaylists");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Series.MySeriePlaylistSerie", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("MySeriePlaylistId");
-
-                    b.Property<int>("SerieId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MySeriePlaylistId");
-
-                    b.HasIndex("SerieId");
-
-                    b.ToTable("MySeriePlaylistSeries");
-                });
-
             modelBuilder.Entity("ProjMediaCollection.Domain.Series.Season", b =>
                 {
                     b.Property<int>("Id")
@@ -796,26 +760,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.HasOne("ProjMediaCollection.Domain.Series.Season", "Season")
                         .WithMany("SeasonEpisodes")
                         .HasForeignKey("SeasonId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Series.MySeriePlaylist", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Series.MySeriePlaylistSerie", b =>
-                {
-                    b.HasOne("ProjMediaCollection.Domain.Series.MySeriePlaylist", "MySeriePlaylist")
-                        .WithMany("MySerie")
-                        .HasForeignKey("MySeriePlaylistId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ProjMediaCollection.Domain.Series.Serie", "Serie")
-                        .WithMany()
-                        .HasForeignKey("SerieId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -36,6 +36,8 @@ namespace ProjMediaCollection.Data
         public DbSet<Serie> Series { get; set; }
         public DbSet<SeriesGenre> SeriesGenres { get; set;}
         public DbSet<SerieGenresSerie> SerieGenresSeries { get; set; }
+        public DbSet<MySeriePlaylist> MySeriePlaylists { get; set; }
+        public DbSet<MySeriePlaylistSerie> MySeriePlaylistSeries { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

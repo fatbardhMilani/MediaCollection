@@ -1,0 +1,41 @@
+﻿@model ProjMediaCollection.Models.UserViewModels.MySerieIndexViewModel
+@*<form asp-action="MyMovieIndex" asp-controller="User" method="get">
+
+    </form>*@
+
+<td><a asp-action="CreateSeriePlaylist" asp-controller="User">Create new List</a></td>
+<table class="table">
+    <tr>
+        <th>playlistId</th>
+        <th>playlistname</th>
+        <th>moviename</th>
+        <th>covers</th>
+    </tr>
+    @foreach (var item in Model.MySeriePlaylist)
+    {
+        @foreach (var album in item.MySelectedSerie)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+
+                <td>@Html.Label(album.Title)</td>
+                <td>
+                    @album.Id
+                    @if (album.Cover != null)
+                    {
+                        <a asp-controller="Serie" asp-action="DetailSerie" asp-route-id="@album.SerieId">  <img src="data:image;base64,@System.Convert.ToBase64String(album.Cover)" width="160" height="205" /></a>
+                    }
+                    else
+                    {
+                        <p>geen foto beschikbaar</p>
+                    }
+
+
+
+                </td>
+
+
+            </tr>}
+    }
+</table>

@@ -1,0 +1,12 @@
+﻿@model ProjMediaCollection.Models.UserViewModels.CreateSeriePlaylistViewModel
+
+<form asp-controller="User" asp-action="CreateSeriePlaylist" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label asp-for="SeriePlaylistName">Playlist name</label>
+        <input asp-for="SeriePlaylistName" class="form-control" />
+        <span asp-validation-for="SeriePlaylistName" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Playlist</button>
+</form>

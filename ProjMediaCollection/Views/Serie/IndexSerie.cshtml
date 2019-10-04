@@ -19,18 +19,17 @@
             </td>
             <td>@serie.Title</td>
 
-            @*<td>
-                <form asp-action="AddAlbumToPlaylist" asp-controller="User" asp-route-id="@album.Id" method="post">
+            <td>
+                <form asp-action="AddSerieToPlaylist" asp-controller="User" asp-route-id="@serie.Id" method="post">
                     <div class=" form-group">
-                        <label asp-for="SelectedMyMusicPlaylist"></label>
-                        <select class="form-control" asp-for="SelectedMyMusicPlaylist" asp-items="Model.MyMusicPlaylistToSelect"></select>
-                        <span class="text-danger" asp-validation-for="MyMusicPlaylistToSelect"></span>
+                        <label asp-for="SelectedMySeriePlaylist"></label>
+                        <select class="form-control" asp-for="SelectedMySeriePlaylist" asp-items="Model.MySeriePlaylistToSelect"></select>
+                        <span class="text-danger" asp-validation-for="MySeriePlaylistToSelect"></span>
                     </div>
                     <button class="btn btn-primary" type="submit">Add to playlist</button>
                 </form>
 
-            </td>*@
-
+            </td>
 
         </tr>
     }
