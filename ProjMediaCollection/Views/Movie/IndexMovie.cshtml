@@ -1,42 +1,50 @@
 ﻿@model ProjMediaCollection.Models.MovieViewModels.IndexMovieViewModel
 
 
+
+
+
+
+
     <div class="container">
         <!-- Content here -->
 
+        <div class="filter">
+            @if (Model.MovieList.Count() == 0)
+            {
+                <p>Er zijn nog geen films</p>
+            }
 
 
-        @if (Model.MovieList.Count() == 0)
-        {
-            <p>Er zijn nog geen films</p>
-        }
+
+            <form asp-action="IndexMovie" asp-controller="Movie" method="get">
+                <div class=" form-group">
+                    <label asp-for="Search">Filter on Title</label>
+                    <input class="form-control" asp-for="Search" />
+                    <span class="text-danger" asp-validation-for="Search"></span>
+                </div>
+
+                <label asp-for="TagSearch">Filter on genre</label>
+                <p>
+                    @for (int i = 0; i < Model.TagSearch.Count; i++)
+                    {
+                        <label>@Model.TagSearch[i].Name</label>
+                        <input asp-for="@Model.TagSearch[i].Checked" type="checkbox" />
+                        <input asp-for="@Model.TagSearch[i].Id" type="hidden" />
+                        <input asp-for="@Model.TagSearch[i].Name" type="hidden" />
+                    }
+                </p>
+
+                <button class="btn btn-success" type="submit">Search</button>
+
+            </form>
 
 
+            <p><a asp-action="CreateMovie" asp-controller="Movie">Create new movie</a></p>
 
-        <form asp-action="IndexMovie" asp-controller="Movie" method="get">
-            <div class=" form-group">
-                <label asp-for="Search">Filter</label>
-                <input class="form-control" asp-for="Search" />
-                <span class="text-danger" asp-validation-for="Search"></span>
-            </div>
-
-            <label asp-for="TagSearch">Filter on genre</label>
-            <p>
-                @for (int i = 0; i < Model.TagSearch.Count; i++)
-                {
-                    <label>@Model.TagSearch[i].Name</label>
-                    <input asp-for="@Model.TagSearch[i].Checked" type="checkbox" />
-                    <input asp-for="@Model.TagSearch[i].Id" type="hidden" />
-                    <input asp-for="@Model.TagSearch[i].Name" type="hidden" />
-                }
-            </p>
-
-            <button class="btn btn-success" type="submit">Search</button>
-
-        </form>
+        </div>
 
 
-        <p><a asp-action="CreateMovie" asp-controller="Movie">Create new movie</a></p>
 
         @*<table class="table">
         <tr>
@@ -91,58 +99,73 @@
 
 
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+
 
         @foreach (var item in Model.MovieList)
         {
-                <!-- Grid column -->
-                <div class="col-lg-4 col-md-6">
+            <!-- Grid column -->
+            <div class="col-lg-4 col-md-6">
 
-                    <!--Card-->
-                    <div class="card">
+                <!--Card-->
+                <div class="card">
 
-                        <!--Card image-->
-                        <div class="view">
-                            @if (item.Cover != null)
-                            {
+                    <!--Card image-->
+                    <div class="view">
+                        @if (item.Cover != null)
+                        {
 
-                                <a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id">
-                                    <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" class="card-img-top" alt="photo">
-                                    <div class="mask rgba-white-slight"></div>
-                                </a>
-                            }
-                            else
-                            {
-                                <p>Geen foto beschikbaar</p>
-                            }
-                        </div>
+                        <a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id">
+                            <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" class="card-img-top" alt="photo">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                        }
+                        else
+                        {
+                            <p>Geen foto beschikbaar</p>
+                        }
+                    </div>
 
-                        <!--Card content-->
-                        <div class="card-body elegant-color white-text">
-                            <!--Title-->
-                            <h4 class="card-title">@item.Title</h4>
-                            <!--Text-->
-                            <p class="card-text white-text">
-                                @item.Release
-                            </p>
+                    <!--Card content-->
+                    <div class="card-body elegant-color white-text">
+                        <!--Title-->
+                        <h4 class="card-title">@item.Title</h4>
+                        <!--Text-->
+                        <p class="card-text white-text">
+                            @item.Release
+                        </p>
 
+                        @if (User.Identity.IsAuthenticated)
+                        {
                             <form asp-action="AddToPlaylist" asp-controller="User" asp-route-id="@item.Id" method="post">
                                 @*<a asp-action="AddToPlaylist"  asp-controller="User" asp-route-id="@item.Id" >Add to playlist</a>*@
 
                                 <div class=" form-group">
-                                    <label asp-for="SelectedMoviePlaylist"></label>
+                                    <label asp-for="SelectedMoviePlaylist">Select your playlist</label>
                                     <select class="form-control" asp-for="SelectedMoviePlaylist" asp-items="Model.MoviePlaylistToSelect"></select>
                                     <span class="text-danger" asp-validation-for="MoviePlaylistToSelect"></span>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Add to playlist</button>
+
                             </form>
-
-                            <a href="#" class="btn btn-outline-white btn-md waves-effect">Button</a>
-                        </div>
-
+                        }
+                        @*<a href="#" class="btn btn-outline-white btn-md waves-effect">Button</a>*@
                     </div>
-                    <!--/.Card-->
 
                 </div>
+                <!--/.Card-->
+
+            </div>
+
         }
 
     </div>
