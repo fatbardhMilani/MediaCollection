@@ -15,5 +15,8 @@ namespace ProjMediaCollection.Models.MovieViewModels
         public DateTime Releas { get; set; }
         public TimeSpan Duration { get; set; }
         public List<MovieGenreTagDetailViewModel> MovieGenreTagDetails { get; set; }
+
+        public List<MovieReviewViewModel> MovieReviews { get; set; }
+        public CreateReviewViewModel CreateRating { get; set; }
     }
 }

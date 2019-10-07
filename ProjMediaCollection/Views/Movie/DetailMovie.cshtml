@@ -41,3 +41,33 @@ else
 <div class="embed-responsive embed-responsive-16by9">
     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/TcMBFSGVi1c" allowfullscreen></iframe>
 </div>
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-controller="Movie" asp-action="AddReview" asp-route-id="@Model.Id">
+
+        <div>
+            <label asp-for="CreateRating.Rating">Rating</label>
+            <input class="form-control" asp-for="CreateRating.Rating" />
+            <span class="text-danger" asp-validation-for="CreateRating.Rating"></span>
+            <p></p>
+            <p><label asp-for="CreateRating.Review">Review</label></p>
+            <textarea asp-for="CreateRating.Review" cols="100" rows="10"></textarea>
+            <span class="text-danger" asp-validation-for="CreateRating.Review"></span>
+
+            <p><button class="btn btn-success" type="submit"> Add Review</button></p>
+
+        </div>
+
+    </form>
+}
+
+@foreach (var item in Model.MovieReviews)
+{
+    <p><u><strong>@item.UserName</strong></u></p>
+    <strong>Score</strong>
+    <p>@item.Rating/10</p>
+    <strong>Review</strong>
+    <p>@item.Review</p>
+}

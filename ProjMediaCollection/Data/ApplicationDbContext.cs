@@ -19,6 +19,8 @@ namespace ProjMediaCollection.Data
         public DbSet<MovieDirector> MovieDirectors { get; set; }
         public DbSet<UserMovie> UserMovies { get; set; }
         public DbSet<MoviePlaylist> MoviePlaylists { get; set; }
+        public DbSet<MovieReview> MovieReviews { get; set; }
+
         //Muziek DbSet//
         public DbSet<Album> Albums { get; set; }
         public DbSet<AlbumArtist> AlbumArtists { get; set; }

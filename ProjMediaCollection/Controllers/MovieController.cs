@@ -175,6 +175,25 @@ namespace ProjMediaCollection.Controllers
             };
 
 
+
+            List<MovieReview> reviews = _applicationDbContext.MovieReviews.Where(x => x.MovieId== id).ToList();
+
+            List<MovieReviewViewModel> reviewList = new List<MovieReviewViewModel>();
+
+            foreach (var item in reviews)
+            {
+                var user = _applicationDbContext.Users.FirstOrDefault(x => x.Id == item.UserId);
+                reviewList.Add(new MovieReviewViewModel()
+                {
+                    UserName = user.UserName,
+                    Rating = item.Rating,
+                    Review = item.Review
+                });
+            }
+            detailMovie.MovieReviews = reviewList;
+
+
+
             return View(detailMovie);
         }
 
@@ -280,6 +299,27 @@ namespace ProjMediaCollection.Controllers
             return RedirectToAction("IndexMovie");
         }
 
+
+        public IActionResult AddReview(int id, CreateReviewViewModel CreateRating)// hier ga je niveau dieper dus naam moet matchn
+        {
+            if (!TryValidateModel(CreateRating))
+            {
+                return RedirectToAction("Detail", new { Id = id });
+            }
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var createRating = new MovieReview()
+            {
+                MovieId = id,
+                UserId = userName,
+                Review = CreateRating.Review,
+                Rating = CreateRating.Rating
+            };
+
+            _applicationDbContext.MovieReviews.Add(createRating);
+            _applicationDbContext.SaveChanges();
+            return RedirectToAction("DetailMovie", new { Id = id });
+        }
 
     }
 

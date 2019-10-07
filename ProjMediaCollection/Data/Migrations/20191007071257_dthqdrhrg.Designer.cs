@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjMediaCollection.Data;
 
 namespace ProjMediaCollection.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191007071257_dthqdrhrg")]
+    partial class dthqdrhrg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -291,29 +293,6 @@ namespace ProjMediaCollection.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("MoviePlaylists");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.MovieReview", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("MovieId");
-
-                    b.Property<int>("Rating");
-
-                    b.Property<string>("Review");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MovieReviews");
                 });
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Film.UserMovie", b =>
@@ -721,18 +700,6 @@ namespace ProjMediaCollection.Data.Migrations
 
             modelBuilder.Entity("ProjMediaCollection.Domain.Film.MoviePlaylist", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ProjMediaCollection.Domain.Film.MovieReview", b =>
-                {
-                    b.HasOne("ProjMediaCollection.Domain.Film.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
