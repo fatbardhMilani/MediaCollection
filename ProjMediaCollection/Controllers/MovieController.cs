@@ -287,7 +287,7 @@ namespace ProjMediaCollection.Controllers
                 _applicationDbContext.Movies.Update(movieToEdit);
                 _applicationDbContext.SaveChanges();
 
-                return RedirectToAction("IndexMovie");
+                return RedirectToAction("DetailMovie",new {id = id });
             };
 
             
@@ -304,7 +304,7 @@ namespace ProjMediaCollection.Controllers
             return RedirectToAction("IndexMovie");
         }
 
-
+        [Authorize]
         public IActionResult AddReview(int id, CreateReviewViewModel CreateRating)// hier ga je niveau dieper dus naam moet matchn
         {
             if (!TryValidateModel(CreateRating))

@@ -1,145 +1,169 @@
 ﻿@model ProjMediaCollection.Models.MovieViewModels.DetailMovieViewModel
 
+    <div class="container">
 
+        <h1 class="PageTitle"><a asp-action="IndexMovie" asp-controller="Movie">Movies</a> / @Model.Title</h1>
 
-<h1 class="PageTitle">Movie</h1>
+        <div class="col-md-6">
+            <div class="row">
+                @*<h1>@Model.Title</h1>*@
 
-<div class="detailMovie col-md-6">
-
-    <h1>@Model.Title</h1>
-    <p></p>
-    @if (Model.Cover != null)
-    {
-        <p><img src="data:image;base64,@System.Convert.ToBase64String(Model.Cover)" width="160" height="205" /></p>
-    }
-    else
-    {
-        <p>Geen foto beschikbaar</p>
-    }
-
-</div>
-
-
-<div class="detailMovie col-md-6">
-
-    <p><strong>Release</strong></p>
-    <p>@Model.Releas</p>
-
-    <p><strong>Director</strong></p>
-    <p>@Model.Director</p>
-
-    <p><strong>Duration</strong></p>
-    <p>@Model.Duration</p>
-    <table class="table">
-
-
-
-        <tr>
-            <td class="Discription">
-                <p><strong>Description</strong></p>
-                <p id="detail">@Model.Description</p>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <p><strong>Genre</strong></p>
-                @foreach (var item in Model.MovieGenreTagDetails)
+                @if (Model.Cover != null)
                 {
-                    <p>@item.Name</p>
+                    <p><img class="FilmCover" src="data:image;base64,@System.Convert.ToBase64String(Model.Cover)" /></p>
                 }
-            </td>
-        </tr>
+                else
+                {
+                    <p>Geen foto beschikbaar</p>
+                }
+                <p>
+                    @Model.Releas.Date.ToShortDateString() | @Model.Duration | @foreach (var item in Model.MovieGenreTagDetails)
+                    {<span>@item.Name </span>}|
+                <p><strong>Director</strong></p>
+                <p>@Model.Director</p>
+                <p></p>
+            </div>
 
-    </table>
-</div>
+            <div class="row">
+                <form method="post">
+                    <a asp-action="EditMovie" asp-controller="Movie" asp-route-id="@Model.Id">Edit</a>
+                    @*<button class="btn btn-primary" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>*@
 
-<form method="post">
-    <a asp-action="EditMovie" asp-controller="Movie" asp-route-id="@Model.Id">Edit</a>
-    @*<button class="btn btn-primary" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>*@
+                </form>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </div>
 
-</form>
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <h3>What's your opinion?</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+                    <form asp-controller="Movie" asp-action="AddReview" asp-route-id="@Model.Id">
 
-<div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="@Model.UrlTrailer" allowfullscreen></iframe>
-</div>
+                        <div>
+                            <label asp-for="CreateRating.Rating">Rating</label>
+                            <input max="10" min="0" id="ratingField" class="form-control" asp-for="CreateRating.Rating" />
+                            <span class="text-danger" asp-validation-for="CreateRating.Rating"></span>
+                            <p></p>
+                            <p><label asp-for="CreateRating.Review">Review</label></p>
+                            <textarea asp-for="CreateRating.Review" cols="65" rows="10"></textarea>
+                            <span class="text-danger" asp-validation-for="CreateRating.Review"></span>
+
+                            <p>
+                            <button class="btn btn-success" type="submit"> Add Review</button>
+                            </p>
+
+                        </div>
+
+                    </form>
+                
+
+            </div>
+        </div>
 
 
-@if (User.Identity.IsAuthenticated)
-{
-    <form asp-controller="Movie" asp-action="AddReview" asp-route-id="@Model.Id">
+        <div class="col-md-6">
+            <div class=" row">
 
-        <div>
-            <label asp-for="CreateRating.Rating">Rating</label>
-            <input max="10" min="0" id="ratingField" class="form-control" asp-for="CreateRating.Rating" />
-            <span class="text-danger" asp-validation-for="CreateRating.Rating"></span>
-            <p></p>
-            <p><label asp-for="CreateRating.Review">Review</label></p>
-            <textarea asp-for="CreateRating.Review" cols="100" rows="10"></textarea>
-            <span class="text-danger" asp-validation-for="CreateRating.Review"></span>
-            
-            <p><button class="btn btn-success" type="submit"> Add Review</button></p>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="@Model.UrlTrailer" allowfullscreen></iframe>
+                </div>
+
+                <table class="table">
+                    <tr>
+                        <td class="Discription">
+
+                            <p id="detail">@Model.Description</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="row">
+
+                <table class="table">
+
+                    <tr>
+                        <td>
+                            <h3>User Reviews</h3>
+                        </td>
+                    </tr>
+
+                    @foreach (var item in Model.MovieReviews)
+                    {
+                        <tr>
+                            <td>
+                                <p><u><strong>@item.UserName</strong></u></p>
+                                <strong>Score</strong>
+                                <p>@item.Rating/10</p>
+                                <strong>Review</strong>
+                                <p id="Review">@item.Review</p>
+                            </td>
+                        </tr>
+
+                    }
+
+                </table>
+
+            </div>
+                
 
         </div>
 
-    </form>
-}
-
-<table class="table">
-
-    @foreach (var item in Model.MovieReviews)
-    {
-        <tr>
-            <td>
-                <p><u><strong>@item.UserName</strong></u></p>
-                <strong>Score</strong>
-                <p>@item.Rating/10</p>
-                <strong>Review</strong>
-                <p id="Review">@item.Review</p>
-            </td>
-        </tr>
-
-    }
-
-</table>
-
-
-
-@*<div class="detailMovie klapbord  col-md-6">
-
-    <img id="ClapBoard" src="~/images/ClapBoard.png" />
-
-    <span id="FilmRelease"><strong>Release: </strong><span>@Html.DisplayFor(model => model.Releas)</span></span>
-
-
-    <span id="DirectorLabel"><strong>Director: </strong><span>@Model.Director</span></span>
-
-
-    <span id="DurationLable"><strong>Duration:</strong><span>@Model.Duration</span></span>
 
 
 
 
-    <table class="table">
 
 
 
-        <tr>
-            <td class="Discription">
-                <p><strong>Description</strong></p>
-                <p id="detail">@Model.Description</p>
-            </td>
-        </tr>
 
-        <tr>
-            <td>
-                <p><strong>Genre</strong></p>
-                @foreach (var item in Model.MovieGenreTagDetails)
-                {
-                    <p>@item.Name</p>
-                }
-            </td>
-        </tr>
 
-    </table>
-</div>*@
+        @*<div class="detailMovie klapbord  col-md-6">
+
+            <img id="ClapBoard" src="~/images/ClapBoard.png" />
+
+            <span id="FilmRelease"><strong>Release: </strong><span>@Html.DisplayFor(model => model.Releas)</span></span>
+
+
+            <span id="DirectorLabel"><strong>Director: </strong><span>@Model.Director</span></span>
+
+
+            <span id="DurationLable"><strong>Duration:</strong><span>@Model.Duration</span></span>
+
+
+
+
+            <table class="table">
+
+
+
+                <tr>
+                    <td class="Discription">
+                        <p><strong>Description</strong></p>
+                        <p id="detail">@Model.Description</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <p><strong>Genre</strong></p>
+                        @foreach (var item in Model.MovieGenreTagDetails)
+                        {
+                            <p>@item.Name</p>
+                        }
+                    </td>
+                </tr>
+
+            </table>
+        </div>*@
+    </div>

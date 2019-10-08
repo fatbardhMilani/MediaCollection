@@ -9,7 +9,8 @@
     <div class="container">
         <!-- Content here -->
 
-        <button id="filter" class="accordion">Filters </button>
+        <h1 class="PageTitle">Movies</h1>
+        <button  class="accordion">Filters </button>
 
         <div class="panel">
             @if (Model.MovieList.Count() == 0)
@@ -139,7 +140,7 @@
                         <h4 class="card-title">@item.Title</h4>
                         <!--Text-->
                         <p class="card-text white-text">
-                            @item.Release
+                            @item.Release.Date.ToShortDateString()
                         </p>
 
                         @if (User.Identity.IsAuthenticated)
