@@ -61,7 +61,7 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.filter{
+#filter{
     padding-top:100px;
     padding-bottom:20px;
 }
@@ -96,4 +96,82 @@ body {
     display: none;
     background-color: white;
     overflow: hidden;
+}
+
+#detail, #Review {
+    word-break: break-all;
+}
+
+.detailMovie, #creatAlbum, #createSerie {
+    padding-top: 100px;
+    padding-bottom: 20px;
+}
+
+#ratingField {
+    width: 60px;
+}
+
+footer {
+    position: fixed;
+    height: 70px;
+    bottom: 0;
+    width: 100%;
+    background-color:black;
+}
+.Discription {
+    background-color: gray;
+}
+.PageTitle{
+    font:100;
+}
+#ClapBoard{
+    height:500px;
+    width:500px;
+}
+#FilmRelease {
+    position: relative;
+    top: -296px;
+    right: -31px;
+    color: white;
+}
+#FilmReleaseDate {
+    position: relative;
+    top: -340px;
+    right: -150px;
+    color: white;
+    font-size: 40px;
+}
+
+#DirectorLabel {
+    position: relative;
+    top: -224px;
+    right: 180px;
+    color: white;
+}
+
+#DirectorName {
+    position: relative;
+    top: -360px;
+    right: -150px;
+    color: white;
+    font-size: 40px;
+}
+
+#DurationLable {
+    position: relative;
+    top: -180px;
+    right: -32px;
+    color: white;
+}
+
+#Duration {
+    position: relative;
+    top: -378px;
+    right: -150px;
+    color: white;
+    font-size: 40px;
+}
+
+.klapbord {
+    font-size: x-large;
 }

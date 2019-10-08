@@ -15,6 +15,7 @@ namespace ProjMediaCollection.Domain.Film
         public string Director { get; set; }
         public DateTime Releas { get; set; }
         public TimeSpan Duration { get; set; }
+        public string UrlTrailer { get; set; }
         public ICollection<MovieGenresMovie> Genre { get; set; }
 
 

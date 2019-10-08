@@ -15,6 +15,7 @@ namespace ProjMediaCollection.Models.MovieViewModels
         public string Director { get; set; }
         public DateTime Releas { get; set; }
         public TimeSpan Duration { get; set; }
+        public string UrlTrailer { get; set; }
         public List<MovieGenreTagViewModel> MovieGenreTags { get; set; }
         //public ICollection<MovieGenre> Genre { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿@model ProjMediaCollection.Models.MusicViewModels.DetailAlbumViewModel
 
-<strong>Title</strong>
+@*<strong>Title</strong>
 <p>@Model.Title</p>
 <strong>Cover</strong>
 
@@ -23,6 +23,121 @@ else
 <form method="post">
     <a asp-action="EditAlbum" asp-controller="Music" asp-route-id="@Model.Id">Edit</a>
     <a asp-action="AddSong" asp-controller="Music" asp-route-id="@Model.Id">Add song</a>
+    @*<button class="btn btn-primary" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>
+
+</form>*@
+
+
+
+<div class="detailMovie col-md-6">
+
+    <strong>Title</strong>
+    <p>@Model.Title</p>
+    <strong>Cover</strong>
+
+    @if (Model.Cover != null)
+    {
+        <p><img src="data:image;base64,@System.Convert.ToBase64String(Model.Cover)" width="160" height="205" /></p>
+    }
+    else
+    {
+        <p>Geen foto beschikbaar</p>
+    }
+
+</div>
+
+
+<div class="detailMovie col-md-6">
+    <table class="table">
+        <tr>
+            <td>
+                <p><strong>Title</strong></p>
+                <p>@Model.Title</p>
+            </td>
+        </tr>
+
+        @*<tr>
+            <td>
+                <p><strong>Director</strong></p>
+                <p>@Model.Director</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <p><strong>Duration</strong></p>
+                <p>@Model.Duration</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <p><strong>Description</strong></p>
+                <p id="detail">@Model.Description</p>
+            </td>
+        </tr>*@
+
+        <tr><td><strong>Songs</strong></td></tr>
+        @foreach (var song in Model.SongsToAddToAlbum)
+        {
+            <tr>
+                <td>
+                    
+                    <a asp-action="DetailSong" asp-controller="Music" asp-route-id="@song.Id"><p>@song.Title</p></a>
+                </td>
+            </tr>
+
+        }
+    </table>
+</div>
+
+
+<form method="post">
+    <a asp-action="EditAlbum" asp-controller="Music" asp-route-id="@Model.Id">Edit</a>
+    <a asp-action="AddSong" asp-controller="Music" asp-route-id="@Model.Id">Add song</a>
     @*<button class="btn btn-primary" asp-controller="Movie" asp-action="EditMovie" asp-route-id="@Model.Id">Edit</button>*@
 
 </form>
+
+@*<div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" src="@Model.UrlTrailer" allowfullscreen></iframe>
+</div>
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-controller="Movie" asp-action="AddReview" asp-route-id="@Model.Id">
+
+        <div>
+            <label asp-for="CreateRating.Rating">Rating</label>
+            <input max="10" min="0" id="ratingField" class="form-control" asp-for="CreateRating.Rating" />
+            <span class="text-danger" asp-validation-for="CreateRating.Rating"></span>
+            <p></p>
+            <p><label asp-for="CreateRating.Review">Review</label></p>
+            <textarea asp-for="CreateRating.Review" cols="100" rows="10"></textarea>
+            <span class="text-danger" asp-validation-for="CreateRating.Review"></span>
+
+            <p><button class="btn btn-success" type="submit"> Add Review</button></p>
+
+        </div>
+
+    </form>
+}
+
+<table class="table">
+
+    @foreach (var item in Model.MovieReviews)
+    {
+        <tr>
+            <td>
+                <p><u><strong>@item.UserName</strong></u></p>
+                <strong>Score</strong>
+                <p>@item.Rating/10</p>
+                <strong>Review</strong>
+                <p id="Review">@item.Review</p>
+            </td>
+        </tr>
+
+    }
+
+</table>*@

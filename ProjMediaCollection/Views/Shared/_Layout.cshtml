@@ -6,6 +6,8 @@
     <title>@ViewData["Title"] - ProjMediaCollection</title>
 
     <environment include="Development">
+        @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />*@
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
 
@@ -15,9 +17,11 @@
 
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />*@
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+        asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+        asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 
     </environment>
@@ -34,25 +38,41 @@
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">ProjMediaCollection</a>
             </div>
+
+
+
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Movie" asp-action="IndexMovie">Movies</a></li>
-                    <li><a asp-area="" asp-controller="Music" asp-action="IndexAlbum">Music</a></li>
                     <li><a asp-area="" asp-controller="Serie" asp-action="IndexSerie">Series</a></li>
+                    <li><a asp-area="" asp-controller="Music" asp-action="IndexAlbum">Music</a></li>
+
+
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="User" asp-action="MySerieIndex">My series</a></li>
-                        <li><a asp-area="" asp-controller="User" asp-action="MyMusicIndex">My music</a></li>
-                        <li><a asp-area="" asp-controller="User" asp-action="MyMovieIndex">My movies</a></li>
-                    }
+                        <li role="presentation" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                My media <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
 
+                                <li><a asp-area="" asp-controller="User" asp-action="MyMovieIndex">My movies</a></li>
+                                <li><a asp-area="" asp-controller="User" asp-action="MySerieIndex">My series</a></li>
+                                <li><a asp-area="" asp-controller="User" asp-action="MyMusicIndex">My music</a></li>
+
+
+                            </ul>
+                        </li>
+                    }
                 </ul>
+
                 <partial name="_LoginPartial" />
             </div>
-        </div>
+            </div>
     </nav>
 
     <partial name="_CookieConsentPartial" />

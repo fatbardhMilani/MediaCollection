@@ -36,7 +36,7 @@
                         @if (movie.Cover != null)
                         {
 
-                            <a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id">
+                            <a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@movie.Id">
                                 <img src="data:image;base64,@System.Convert.ToBase64String(movie.Cover)" class="card-img-top" alt="photo">
                                 <div class="mask rgba-white-slight"></div>
                             </a>

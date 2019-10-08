@@ -9,7 +9,9 @@
     <div class="container">
         <!-- Content here -->
 
-        <div class="filter">
+        <button id="filter" class="accordion">Filters </button>
+
+        <div class="panel">
             @if (Model.MovieList.Count() == 0)
             {
                 <p>Er zijn nog geen films</p>
@@ -38,10 +40,6 @@
                 <button class="btn btn-success" type="submit">Search</button>
 
             </form>
-
-
-            <p><a asp-action="CreateMovie" asp-controller="Movie">Create new movie</a></p>
-
         </div>
 
 
@@ -96,7 +94,7 @@
 
         </table>*@
 
-
+        <p><a asp-action="CreateMovie" asp-controller="Movie">Add new movie</a></p>
 
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -119,15 +117,15 @@
                         @if (item.Cover != null)
                         {
 
-                        <a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id">
-                            <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" class="card-img-top" alt="photo">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            <div class="mask rgba-white-slight"></div>
-                        </a>
+                            <a asp-controller="Movie" asp-action="DetailMovie" asp-route-id="@item.Id">
+                                <img src="data:image;base64,@System.Convert.ToBase64String(item.Cover)" class="card-img-top" alt="photo">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <div class="mask rgba-white-slight"></div>
+                            </a>
                         }
                         else
                         {

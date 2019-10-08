@@ -48,7 +48,9 @@ namespace ProjMediaCollection.Controllers
                     Releas = movieModel.Releas,
                     Director = movieModel.Director,
                     Description = movieModel.Description,
-                    Duration = movieModel.Duration
+                    Duration = movieModel.Duration,
+                    UrlTrailer = movieModel.UrlTrailer
+                   
                 };
 
                 List<MovieGenresMovie> selectedTags = new List<MovieGenresMovie>();
@@ -171,6 +173,7 @@ namespace ProjMediaCollection.Controllers
                 Director = movieFromDb.Director,
                 Description = movieFromDb.Description,
                 Duration = movieFromDb.Duration,
+                UrlTrailer = movieFromDb.UrlTrailer,
                 MovieGenreTagDetails = tags
             };
 
@@ -224,7 +227,8 @@ namespace ProjMediaCollection.Controllers
                 Releas = movieFromDb.Releas,
                 Director = movieFromDb.Director,
                 Description = movieFromDb.Description,
-                Duration = movieFromDb.Duration
+                Duration = movieFromDb.Duration,
+                UrlTrailer = movieFromDb.UrlTrailer
             };
             movieToEdit.MovieGenreTags = movieGenres;
 
@@ -273,6 +277,7 @@ namespace ProjMediaCollection.Controllers
                 movieToEdit.Director = editMovieModel.Director;
                 movieToEdit.Description = editMovieModel.Description;
                 movieToEdit.Duration = editMovieModel.Duration;
+                movieToEdit.UrlTrailer = editMovieModel.UrlTrailer;
 
                 if (editMovieModel.Cover != null)
                 {
