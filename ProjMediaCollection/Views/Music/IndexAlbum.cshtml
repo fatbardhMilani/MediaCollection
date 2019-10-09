@@ -1,7 +1,9 @@
 ﻿@model ProjMediaCollection.Models.MusicViewModels.AlbumIndexViewModel
 
     <div class="container">
-       <p id="creatAlbum"><a asp-action="CreateAlbum" asp-controller="Music">Create new album</a></p> 
+
+        <h1 class="PageTitle">Music</h1>
+
         @*<table class="table">
 
             @foreach (var album in Model.AlbumList)
@@ -36,6 +38,31 @@
             }
 
         </table>*@
+
+
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="view">
+                    <a asp-controller="Music" asp-action="CreateAlbum">
+                        <img src="~/images/plus.png" class="card-img-top" alt="photo">
+                    </a>
+                </div>
+
+                <div class="card-body elegant-color white-text">
+                    <!--Title-->
+                    <h4 class="card-title">ADD NEW SERIE</h4>
+                    <!--Text-->
+                    <p class="card-text white-text">
+
+                    </p>
+                    @*<a href="#" class="btn btn-outline-white btn-md waves-effect">Button</a>*@
+                </div>
+
+
+            </div>
+
+        </div>
 
 
 

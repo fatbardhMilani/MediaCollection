@@ -7,12 +7,16 @@
     @foreach (var episode in Model.EpisodesToAddToSeason)
     {
         if (episode != null)
-        {   
+        {
             <strong>Title</strong>
             <p>@episode.Title</p>
 
             <strong>Picture</strong>
-            <p><img src="data:image;base64,@System.Convert.ToBase64String(episode.Picture)" width="160" height="205" /></p>
+            @if (episode.Picture != null)
+            {
+                <p><img src="data:image;base64,@System.Convert.ToBase64String(episode.Picture)" width="160" height="205" /></p>
+            }
+
 
             <strong>Description</strong>
             <p>@episode.Description</p>

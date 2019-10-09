@@ -36,7 +36,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">ProjMediaCollection</a>
+                <a asp-area="" asp-controller="Movie" asp-action="IndexMovie" class="navbar-brand">Media Collection</a>
             </div>
 
 
@@ -44,8 +44,8 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>*@
                     <li><a asp-area="" asp-controller="Movie" asp-action="IndexMovie">Movies</a></li>
                     <li><a asp-area="" asp-controller="Serie" asp-action="IndexSerie">Series</a></li>
                     <li><a asp-area="" asp-controller="Music" asp-action="IndexAlbum">Music</a></li>
@@ -110,13 +110,53 @@
     <!-- Footer -->
     <footer class="page-footer font-small blue">
 
-        <!-- Copyright -->
-        <div class="footer-copyright text-center py-3">
-            © 2018 Copyright:
-            <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
-        </div>
-        <!-- Copyright -->
+        <nav class="navbar navbar-inverse navbar-fixed-bottom">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-bottom-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a asp-area="" asp-controller="Movie" asp-action="IndexMovie" class="navbar-brand">Media Collection</a>
+                </div>
 
+
+
+
+                <div class="navbar-bottom-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>*@
+                        <li><a asp-area="" asp-controller="Movie" asp-action="IndexMovie">Movies</a></li>
+                        <li><a asp-area="" asp-controller="Serie" asp-action="IndexSerie">Series</a></li>
+                        <li><a asp-area="" asp-controller="Music" asp-action="IndexAlbum">Music</a></li>
+
+
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    My media <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+
+                                    <li><a asp-area="" asp-controller="User" asp-action="MyMovieIndex">My movies</a></li>
+                                    <li><a asp-area="" asp-controller="User" asp-action="MySerieIndex">My series</a></li>
+                                    <li><a asp-area="" asp-controller="User" asp-action="MyMusicIndex">My music</a></li>
+
+
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
     </footer>
     <!-- Footer -->
 

@@ -12,5 +12,6 @@ namespace ProjMediaCollection.Models.SerieViewModels
         public string Title { get; set; }
         public byte[] Cover { get; set; }
         public string Description { get; set; }
+        public List<EpisodeListViewModel> EpisodesForSeason { get; set; }
     }
 }

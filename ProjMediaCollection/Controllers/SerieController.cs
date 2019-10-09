@@ -133,14 +133,31 @@ namespace ProjMediaCollection.Controllers
 
             foreach (var item in _applicationDbContext.Seasons)
             {
+                List<EpisodeListViewModel> episodeList = new List<EpisodeListViewModel>();
+
+                foreach (var episode in _applicationDbContext.Episodes.Where( x => x.SeasonId == item.Id))
+                {
+                    episodeList.Add(new EpisodeListViewModel
+                    {
+                        
+                        Picture = episode.Picture,
+                        Title = episode.Title,
+                        Id = episode.Id,
+                        Description = episode.Description
+                    });
+                }
+
                 seasonList.Add(new SeasonListViewModel
                 {
                     Cover = item.Cover,
                     Title = item.Title,
                     Id = item.Id,
-                    Description = item.Description
+                    Description = item.Description,
+                    EpisodesForSeason = episodeList
                 });
             }
+
+
 
             DetailSerieViewModel serieDetail = new DetailSerieViewModel()
             {
@@ -148,7 +165,8 @@ namespace ProjMediaCollection.Controllers
                 Cover = serieFromDb.Cover,
                 Title = serieFromDb.Title,
                 SerieGenreTagDetails = genres,
-                SeasonsToAddToSerie = seasonList
+                SeasonsToAddToSerie = seasonList,
+                
             };
 
             return View(serieDetail);
@@ -161,7 +179,7 @@ namespace ProjMediaCollection.Controllers
 
             List<EpisodeListViewModel> episodeList = new List<EpisodeListViewModel>();
 
-            foreach (var item in _applicationDbContext.Episodes)
+            foreach (var item in _applicationDbContext.Episodes.Where(x => x.SeasonId == id))
             {
                 episodeList.Add(new EpisodeListViewModel
                 {
@@ -201,8 +219,8 @@ namespace ProjMediaCollection.Controllers
                 var addSeason = new Season()
                 {
                     Title = model.Title,
-                    Cover = memoryStream.ToArray(),
-                    Description = model.Description,
+                    //Cover = memoryStream.ToArray(),
+                    //Description = model.Description,
                     SerieId = id
                 };
 
@@ -248,7 +266,7 @@ namespace ProjMediaCollection.Controllers
                 _applicationDbContext.SaveChanges();
             }
 
-            return RedirectToAction("DetailSeason", new { id =id });
+            return RedirectToAction("DetailSerie", new { id =id });
         }
 
         [Authorize]
